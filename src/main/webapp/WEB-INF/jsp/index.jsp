@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-Welcome in Training Document Management System
+welcome from spring mvc
 </body>
 </html>
