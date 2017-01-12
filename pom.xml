@@ -12,32 +12,26 @@
 		<apache.tiles>3.0.5</apache.tiles>
 	</properties>
 	<dependencies>
-	
-	<dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
-<!-- <dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-log4j12</artifactId>
-    <version>1.5.8</version>
-</dependency> -->
-	<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-core -->
-<dependency>
-    <groupId>org.apache.tiles</groupId>
-    <artifactId>tiles-core</artifactId>
-    <version>${apache.tiles}</version>
-</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp -->
-<dependency>
-    <groupId>org.apache.tiles</groupId>
-    <artifactId>tiles-jsp</artifactId>
-    <version>${apache.tiles}</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-core -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+			<version>${apache.tiles}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>${apache.tiles}</version>
+		</dependency>
 		<!-- Core utilities used by other modules. Define this if you use Spring 
 			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
 		<dependency>
@@ -159,5 +153,46 @@
 			<version>${org.springframework.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+
+		<!-- Commons bean util dependency -->
+		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+		<!-- Provides us support to use Connection Pooling (for DataSource) -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.6</version>
+		</dependency>
+
+		<!-- Driver to connect with, when performing database operations -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency>
+
+		<!-- Logging support jars -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+
 	</dependencies>
 </project>

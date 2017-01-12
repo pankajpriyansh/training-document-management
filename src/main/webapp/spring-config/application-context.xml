@@ -1,0 +1,23 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Telling spring that it should search the class path for all the classes 
+		under given base package(s) and look at each class to see if it has a @Controller, 
+		or @Repository, or @Service, or @Component and if it does then Spring will 
+		register the class with the bean factory as if we had typed <bean class="..."/> 
+		in the xml configuration files. -->
+	<context:component-scan base-package="com.yash.tdms.daoJdbcImpl" />
+	<context:component-scan base-package="com.yash.tdms.model" />
+	<context:component-scan base-package="com.yash.tdms.serviceImpl" />
+
+	<!-- Database Related Operations Configurations , such as DataSource , SessionFactory -->
+	<import resource="jdbc-config.xml" />
+
+	<!-- Cache Related Configurations -->
+	<!-- <import resource="ehcache-cache.xml" /> -->
+
+</beans>
