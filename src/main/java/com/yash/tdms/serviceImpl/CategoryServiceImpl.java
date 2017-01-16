@@ -55,4 +55,9 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 	}
 
+	@Override
+	public int getTotalCategories() {
+		return categoryDao.getTotalCategories();
+	}
+
 }

@@ -3,17 +3,20 @@
 }
 
 #section {
-	background-color: rgba(36, 194, 146, 1);
+	background-color: rgb(36, 194, 146);
 	height: 237px;
 	border-color: red;
 	border: 2px;
-	margin: 40px;
-	opacity: 0.5;
-	border-radius: 20px;
+	margin-top: 40px;
+	margin-left: 40px;
+	margin-right: 40px;
+	opacity: 0.8;
+	border-radius: 5px 5px 15px 15px;
 	text-align: center;
 }
 
 #Addmore-button {
+	margin-left: 20px;
 	text-align: center;
 }
 
@@ -53,20 +56,19 @@
 }
 
 .read_more_button {
-	border: 2px solid #e3e3e3;
+	border: 2px solid #5499C7;
 	border-radius: 22px;
 	font-family: "segoeRegular";
 	padding: 5px 17px;
 	text-decoration: none;
-	color: #e3e3e3;
+	color: #5499C7;
 	position: relative;
 	margin-top: 15px;
-	margin-left: 80px;
 	display: inline-block;
 }
 
 a {
-	color: #e33529;
+	color: white;
 	text-decoration: none;
 }
 
@@ -74,20 +76,37 @@ a:hover {
 	border-color: green;
 }
 
+td a {
+	color: rgb(36, 194, 146);
+}
+
 .h3 {
 	font-size: .9em;
 }
 
+/* .row {
+	background-color: grey;
+} */
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {
+.content {
 	height: 537px;
 }
 
 /* Set gray background color and 100% height */
 .sidenav {
+	overflow: scroll;
+	overflow-x: hidden;
 	padding-top: 20px;
-	background-color: #f1f1f1;
+	background-color: #6E7E77;
 	height: 537px;
+	box-shadow: 20px;
+	border-radius: 0px 15px 15px 0px;
+}
+
+.overflow {
+	overflow: scroll;
+	overflow-x: hidden;
+	height: 200px;
 }
 
 /* Set black background color, white text and some padding */
@@ -102,6 +121,8 @@ a:hover {
 	.sidenav {
 		height: auto;
 		padding: 15px;
+		border-right: 2px;
+		border-right-color: black;
 	}
 	.row.content {
 		height: auto;

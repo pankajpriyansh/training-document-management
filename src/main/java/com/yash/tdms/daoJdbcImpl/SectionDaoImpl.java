@@ -79,4 +79,10 @@ public class SectionDaoImpl implements SectionDao {
 				new Object[] { sectionId }, String.class);
 	}
 
+	@Override
+	public int getTotalSections() {
+		return jdbcTemplate.queryForObject("select count(*) from sections",
+				Integer.class);
+	}
+
 }

@@ -52,4 +52,10 @@ public class SectionServiceImpl implements SectionService {
 		return sectionDao.getSectionNameBySectionId(sectionId);
 	}
 
+	@Override
+	public int getTotalSections() {
+
+		return sectionDao.getTotalSections();
+	}
+
 }

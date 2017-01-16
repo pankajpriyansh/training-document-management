@@ -74,13 +74,14 @@
 				<div id="display-section">
 					<!-- <iframe class="embed-responsive-item"
 						src="http://www.w3schools.com/bootstrap/bootstrap_grid_examples.asp"></iframe> -->
-					<div id="page" align="center">
+					<div id="page" align="center"
+						style="overflow: scroll; height: 400px;">
 						<button id="previouspage" style="float: center">Previous
 							page</button>
 						<button id="nextpage" style="float: center">NextPage</button>
 						<button id="zoom" style="float: rigth">Zoom ( +/- )</button>
 						<br>
-						<canvas class="iframe" id="canvas"></canvas>
+						<canvas id="canvas"></canvas>
 					</div>
 				</div>
 			</div>

@@ -24,4 +24,6 @@ public interface CategoryService {
 	void makeCategoryNameFolder(String workingDir, Integer sectionId,
 			String categoryName);
 
+	int getTotalCategories();
+
 }

@@ -28,4 +28,6 @@ public interface SectionService {
 	void makeSectionNameFolder(String workingDir, String sectionName);
 
 	String getSectionNameBySectionId(Integer sectionId);
+
+	int getTotalSections();
 }

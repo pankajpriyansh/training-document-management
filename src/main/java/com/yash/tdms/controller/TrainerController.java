@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,8 +45,7 @@ public class TrainerController {
 	private DocumentService documentService;
 
 	@RequestMapping("/trainer")
-	public String forwardToTrainerPage(HttpSession session) {
-
+	public String forwardToTrainerPage(HttpSession session, ModelMap modelMap) {
 		/** set logged in user to get its id on further pages */
 		Member member = new Member();
 		member.setId(1);
@@ -54,6 +54,12 @@ public class TrainerController {
 		List<Document> documents = documentService
 				.getAllDocumentsByUserId(((Member) session
 						.getAttribute("loggedInUser")).getId());
+		modelMap.addAttribute("totalSections",
+				sectionService.getTotalSections());
+		modelMap.addAttribute("totalCategories",
+				categoryService.getTotalCategories());
+		modelMap.addAttribute("totalDocuments", documents.size());
+
 		// attach documents to request so that they display on browser
 		return "trainer";
 	}
@@ -87,7 +93,7 @@ public class TrainerController {
 		document.setUser_id(((Member) session.getAttribute("loggedInUser"))
 				.getId());
 		String workingDir = request.getServletContext().getRealPath("");
-		System.out.println("working directory "+workingDir);
+		System.out.println("working directory " + workingDir);
 		documentService.uploadFile(file, workingDir, document.getFilePath());
 		documentService.addDocument(document);
 
@@ -100,13 +106,15 @@ public class TrainerController {
 	public void saveSection(@RequestParam("sectionName") String sectionName,
 			HttpSession session, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
+		System.out.println("Inside save section -------------------------");
 		Section section = makeSectionObjectWithGievnDetails(sectionName,
 				session);
 		int sectionId = sectionService.addSection(section);
 		section.setId(sectionId);
 		String workingDir = request.getServletContext().getRealPath("");
 		sectionService.makeSectionNameFolder(workingDir, sectionName);
-		String jsonOfSection = new Gson().toJson(section);
+		String jsonOfSection = new Gson().toJson(sectionService
+				.getTotalSections());
 		response.setContentType("application/json");
 		response.getWriter().append(jsonOfSection);
 	}

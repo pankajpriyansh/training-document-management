@@ -21,4 +21,6 @@ public interface CategoryDao {
 
 	int addCategory(Category category);
 
+	int getTotalCategories();
+
 }

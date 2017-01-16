@@ -28,4 +28,6 @@ public interface SectionDao {
 	int addSection(Section section);
 
 	String getSectionNameBySectionId(Integer sectionId);
+
+	int getTotalSections();
 }

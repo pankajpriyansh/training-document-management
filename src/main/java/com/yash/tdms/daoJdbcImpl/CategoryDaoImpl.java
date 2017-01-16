@@ -17,8 +17,8 @@ import com.yash.tdms.dao.CategoryDao;
 import com.yash.tdms.model.Category;
 
 /**
- * CategoryDaoImpl is the JDBC implementation of all the CRUD operations related to
- * category
+ * CategoryDaoImpl is the JDBC implementation of all the CRUD operations related
+ * to category
  * 
  * @author goyal.ayush
  *
@@ -73,6 +73,12 @@ public class CategoryDaoImpl implements CategoryDao {
 		return jdbcTemplate.queryForObject(
 				"select id from categories where name = ? and createdby=? ",
 				new Object[] { category.getName(), category.getCreatedBy() },
+				Integer.class);
+	}
+
+	@Override
+	public int getTotalCategories() {
+		return jdbcTemplate.queryForObject("select count(*) from categories",
 				Integer.class);
 	}
 
