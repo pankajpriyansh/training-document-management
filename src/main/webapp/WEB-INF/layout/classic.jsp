@@ -12,9 +12,6 @@
 		<tiles:insertAttribute name="header" />
 	</div>
 
-	<div style="float: center; padding: 10px;">
-		<tiles:insertAttribute name="menu" />
-	</div>
 	<tiles:insertAttribute name="body" />
 
 	<br>

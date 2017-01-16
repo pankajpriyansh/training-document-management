@@ -6,7 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
-<body>welcome from spring mvc
+<body>
+	<br>
+	<br>
+	<a href="./trainer.html">Trainer Page</a>
+<br>
+	<br>
+	<a href="./trainee.html">Trainee Page</a>
 
 </body>
 </html>

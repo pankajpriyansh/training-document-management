@@ -11,7 +11,6 @@
 	<definition name="common" template="/WEB-INF/layout/classic.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
-		<put-attribute name="menu" value="/WEB-INF/layout/menu.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
 	</definition>
@@ -19,5 +18,20 @@
 		<put-attribute name="title" value="YTDMS" />
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
 	</definition>
+	<definition name="trainer" extends="common">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="body" value="/WEB-INF/jsp/trainer/trainer.jsp" />
+	</definition>
+	<definition name="createDocumentForm" extends="common">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/trainer/createDocumentForm.jsp" />
+	</definition>
+	<definition name="trainee" extends="common">
+		<put-attribute name="title" value="Trainee Page" />
+		<put-attribute name="body" value="/WEB-INF/jsp/trainee/trainee.jsp" />
+	</definition>
+
+
 
 </tiles-definitions>

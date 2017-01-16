@@ -1,0 +1,109 @@
+.center {
+	text-align: center;
+}
+
+#section {
+	background-color: rgba(36, 194, 146, 1);
+	height: 237px;
+	border-color: red;
+	border: 2px;
+	margin: 40px;
+	opacity: 0.5;
+	border-radius: 20px;
+	text-align: center;
+}
+
+#Addmore-button {
+	text-align: center;
+}
+
+.content {
+	height: 537px;
+}
+
+.logout {
+	font-size: 1em;
+	padding-right: 40px;
+	padding-top: 15px;
+}
+
+.hvr-rectangle-out {
+	display: inline-block;
+	vertical-align: middle;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+	-webkit-transition-property: color;
+	transition-property: color;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+}
+
+.read_more_button {
+	font-size: 18px;
+}
+
+.read_more_button :hover {
+	color: #e33529;
+	border-color: #e33529;
+}
+
+.read_more_button {
+	border: 2px solid #e3e3e3;
+	border-radius: 22px;
+	font-family: "segoeRegular";
+	padding: 5px 17px;
+	text-decoration: none;
+	color: #e3e3e3;
+	position: relative;
+	margin-top: 15px;
+	margin-left: 80px;
+	display: inline-block;
+}
+
+a {
+	color: #e33529;
+	text-decoration: none;
+}
+
+a:hover {
+	border-color: green;
+}
+
+.h3 {
+	font-size: .9em;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+	height: 537px;
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+	padding-top: 20px;
+	background-color: #f1f1f1;
+	height: 537px;
+}
+
+/* Set black background color, white text and some padding */
+.footer {
+	background-color: #555;
+	color: white;
+	padding: 15px;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+	.sidenav {
+		height: auto;
+		padding: 15px;
+	}
+	.row.content {
+		height: auto;
+	}
+}

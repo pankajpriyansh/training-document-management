@@ -2,39 +2,54 @@ package com.yash.tdms.model;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 /**
- * This model will move through the controller to service and DAO. using @ModelAttribute on controller
- * this model will be mapped with Document Creation and update forms. 
+ * This model will move through the controller to service and DAO. using @ModelAttribute
+ * on controller this model will be mapped with Document Creation and update
+ * forms.
+ * 
  * @author sharma.pankaj
  *
  */
+@Component
 public class Document {
-	
+
 	/**
-	 * Unique id of the document, primary key, auto generated in database itself. 
+	 * Unique id of the document, primary key, auto generated in database
+	 * itself.
 	 */
-	
+
 	private int id;
-	
+
 	private int user_id;
-	
+
 	private int category_id;
-	
+
 	private String name;
-	
-	
+
+	private String description;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	private int createdBy;
-	
+
 	private int modifiedBy;
-	
+
 	private Date createdDate;
-	
+
 	private Date modifiedDate;
-	
+
 	private int isActive;
-	
-	private int filePath;
-	
+
+	private String filePath;
+
 	private int isShow;
 
 	public int getId() {
@@ -109,11 +124,11 @@ public class Document {
 		this.isActive = isActive;
 	}
 
-	public int getFilePath() {
+	public String getFilePath() {
 		return filePath;
 	}
 
-	public void setFilePath(int filePath) {
+	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
 
@@ -124,7 +139,14 @@ public class Document {
 	public void setIsShow(int isShow) {
 		this.isShow = isShow;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Document [id=" + id + ", user_id=" + user_id + ", category_id="
+				+ category_id + ", name=" + name + ", createdBy=" + createdBy
+				+ ", modifiedBy=" + modifiedBy + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + ", isActive=" + isActive
+				+ ", filePath=" + filePath + ", isShow=" + isShow + "]";
+	}
 
 }

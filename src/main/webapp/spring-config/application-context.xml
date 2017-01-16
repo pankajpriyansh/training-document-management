@@ -12,7 +12,8 @@
 		in the xml configuration files. -->
 	<context:component-scan base-package="com.yash.tdms.daoJdbcImpl" />
 	<context:component-scan base-package="com.yash.tdms.model" />
-	<context:component-scan base-package="com.yash.tdms.serviceImpl" />
+<!-- 	<context:component-scan base-package="com.yash.tdms.service" />
+ -->	<context:component-scan base-package="com.yash.tdms.serviceImpl" />
 
 	<!-- Database Related Operations Configurations , such as DataSource , SessionFactory -->
 	<import resource="jdbc-config.xml" />

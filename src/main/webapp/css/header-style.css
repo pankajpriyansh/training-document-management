@@ -1,0 +1,28 @@
+.header{
+		background-color:grey;
+		color:black;
+	}
+	h2{
+		font-size:.9em;
+		font-weight:bold;
+		
+	}
+	.logout{
+		font-size:1em;
+		padding-right:20px;
+		padding-top:15px;
+    }
+     .log-btn:hover{
+		 background-color:#17aa1c;
+		 color:white;
+    }
+	.log-btn a:hover{
+		color:white;
+	}
+	.links{
+		text-decoration:none;
+		color:#17aa1c;
+		
+	}
+	
+	
