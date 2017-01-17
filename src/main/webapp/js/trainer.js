@@ -14,8 +14,8 @@ $(document)
 						console.log('subkmitted');
 						console.log($('#newSectionName').val());
 
-						$('#Section').modal('hide');
-						alert('closed');
+//					$('#Section').modal('');
+//						alert('closed');
 /*
 						var sectionName = $('#newSectionName').val();
 						if (sectionName != null) {
