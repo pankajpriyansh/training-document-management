@@ -113,8 +113,7 @@ public class TrainerController {
 		section.setId(sectionId);
 		String workingDir = request.getServletContext().getRealPath("");
 		sectionService.makeSectionNameFolder(workingDir, sectionName);
-		String jsonOfSection = new Gson().toJson(sectionService
-				.getTotalSections());
+		String jsonOfSection = new Gson().toJson(section);
 		response.setContentType("application/json");
 		response.getWriter().append(jsonOfSection);
 	}
