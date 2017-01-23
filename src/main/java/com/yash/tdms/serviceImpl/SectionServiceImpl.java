@@ -25,17 +25,17 @@ public class SectionServiceImpl implements SectionService {
 	@Autowired
 	private SectionDao sectionDao;
 
-	@Override
+	
 	public List<Section> getAllSections() {
 		return sectionDao.getAllSections();
 	}
 
-	@Override
+	
 	public int addSection(Section section) {
 		return sectionDao.addSection(section);
 	}
 
-	@Override
+	
 	public void makeSectionNameFolder(String workingDir, String sectionName) {
 		System.out.println("Current working directory : " + workingDir);
 		File pathToMakeSectionDir = new File(workingDir + File.separator
@@ -47,15 +47,20 @@ public class SectionServiceImpl implements SectionService {
 		}
 	}
 
-	@Override
+	
 	public String getSectionNameBySectionId(Integer sectionId) {
 		return sectionDao.getSectionNameBySectionId(sectionId);
 	}
 
-	@Override
+	
 	public int getTotalSections() {
 
 		return sectionDao.getTotalSections();
+	}
+
+	
+	public boolean checkIfSectionExists(String sectionName) {
+		return sectionDao.checkIfSectionExists(sectionName);
 	}
 
 }

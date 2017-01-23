@@ -29,17 +29,17 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private SectionService sectionService;
 
-	@Override
+	
 	public List<Category> getCategoriesBySectionId(int sectionId) {
 		return categoryDao.getCategoriesBySectionId(sectionId);
 	}
 
-	@Override
+	
 	public int addCategory(Category category) {
 		return categoryDao.addCategory(category);
 	}
 
-	@Override
+	
 	public void makeCategoryNameFolder(String workingDir, Integer sectionId,
 			String categoryName) {
 		String sectionName = sectionService
@@ -55,9 +55,14 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 	}
 
-	@Override
+	
 	public int getTotalCategories() {
 		return categoryDao.getTotalCategories();
+	}
+
+	
+	public boolean checkIfCategoryExists(String categoryName, Integer sectionId) {
+		return categoryDao.checkIfCategoryExists(categoryName, sectionId);
 	}
 
 }

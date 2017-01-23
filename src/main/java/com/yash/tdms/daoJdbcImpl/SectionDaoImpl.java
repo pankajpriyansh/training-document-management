@@ -39,7 +39,6 @@ public class SectionDaoImpl implements SectionDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Override
 	public List<Section> getAllSections() {
 		return jdbcTemplate.query("select * from sections",
 				new SectionRowMapper());
@@ -52,11 +51,14 @@ public class SectionDaoImpl implements SectionDao {
 			Section section = new Section();
 			section.setId(resultSet.getInt("id"));
 			section.setName(resultSet.getString("name"));
+			/*
+			 * if (section.getName().contains(" ")) {
+			 * section.setName(section.getName().replaceAll(" ", "_")); }
+			 */
 			return section;
 		}
 	}
 
-	@Override
 	public int addSection(Section section) {
 		jdbcTemplate
 				.update("INSERT INTO sections(NAME,createdby,modifiedby,createddate,modifiedDate) VALUES(?,?,?,?,?)",
@@ -72,17 +74,29 @@ public class SectionDaoImpl implements SectionDao {
 				Integer.class);
 	}
 
-	@Override
 	public String getSectionNameBySectionId(Integer sectionId) {
 		return jdbcTemplate.queryForObject(
 				"select name from sections where id = ? ",
 				new Object[] { sectionId }, String.class);
 	}
 
-	@Override
 	public int getTotalSections() {
 		return jdbcTemplate.queryForObject("select count(*) from sections",
 				Integer.class);
+	}
+
+	public boolean checkIfSectionExists(String sectionName) {
+
+		try {
+			jdbcTemplate.queryForObject(
+					"select name from sections where name=?",
+					new Object[] { sectionName }, String.class);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return false;
 	}
 
 }

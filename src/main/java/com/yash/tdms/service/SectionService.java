@@ -30,4 +30,6 @@ public interface SectionService {
 	String getSectionNameBySectionId(Integer sectionId);
 
 	int getTotalSections();
+
+	boolean checkIfSectionExists(String sectionName);
 }

@@ -23,4 +23,6 @@ public interface CategoryDao {
 
 	int getTotalCategories();
 
+	boolean checkIfCategoryExists(String categoryName, Integer sectionId);
+
 }

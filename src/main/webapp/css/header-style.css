@@ -1,28 +1,50 @@
-.header{
-		background-color:grey;
-		color:black;
-	}
-	h2{
-		font-size:.9em;
-		font-weight:bold;
-		
-	}
-	.logout{
-		font-size:1em;
-		padding-right:20px;
-		padding-top:15px;
-    }
-     .log-btn:hover{
-		 background-color:#17aa1c;
-		 color:white;
-    }
-	.log-btn a:hover{
-		color:white;
-	}
-	.links{
-		text-decoration:none;
-		color:#17aa1c;
-		
-	}
-	
-	
+html, body {
+	font-family: 'Open Sans', 'sans-serif';
+	font-size: 100%;
+}
+
+@font-face {
+	font-family: 'PoiretOne-Regular';
+	src: url(fonts/PoiretOne-Regular.ttf) format('truetype');
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'PoiretOne-Regular';
+}
+
+
+.header {
+	background-color: grey;
+	color: black;
+}
+
+#logo {
+	border-radius: 50px ;
+}
+
+#h3 {
+	color:white;
+	font-family: 'PoiretOne-Regular';
+}
+
+.logout {
+	font-size: 1em;
+	padding-right: 20px;
+	padding-top: 15px;
+}
+
+.log-btn:hover {
+	background-color: #17aa1c;
+	color: white;
+}
+.dropdown-menu  {
+		background-color: red;
+}
+.log-btn a:hover {
+	color: white;
+}
+
+.links {
+	text-decoration: none;
+	color: #17aa1c;
+}

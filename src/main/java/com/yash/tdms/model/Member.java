@@ -183,4 +183,14 @@ public class Member {
 		this.modifiedDate = modifiedDate;
 	}
 
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", firstname=" + firstname + ", lastname="
+				+ lastname + ", contact=" + contact + ", email=" + email
+				+ ", password=" + password + ", isActive=" + isActive
+				+ ", role=" + role + ", createdBy=" + createdBy
+				+ ", modifiedBy=" + modifiedBy + ", createdDate=" + createdDate
+				+ ", modifiedDate=" + modifiedDate + ", read=" + read + "]";
+	}
+
 }

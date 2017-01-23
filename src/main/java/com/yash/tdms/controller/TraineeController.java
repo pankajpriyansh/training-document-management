@@ -28,12 +28,10 @@ public class TraineeController {
 
 	@RequestMapping("/trainee")
 	public String forwardToTraineePage(HttpSession session, ModelMap modelMap) {
-
-		/** set logged in user to get its id on further pages */
-		Member member = new Member();
-		member.setId(1);
-		session.setAttribute("loggedInUser", member);
-		// attach documents to request so that they display on browser
+		if (session.getAttribute("loggedInUser") == null
+				|| ((Member) session.getAttribute("loggedInUser")).getRole() != 3) {
+			return "failedAuthentication";
+		}
 		List<Document> documents = documentService.getAllActiveDocuments();
 		modelMap.addAttribute("listOfDocuments", documents);
 		System.out.println(documents);

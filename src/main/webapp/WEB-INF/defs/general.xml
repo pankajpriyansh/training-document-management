@@ -14,22 +14,18 @@
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
 	</definition>
-	<definition name="index" extends="common">
-		<put-attribute name="title" value="YTDMS" />
-		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
-	</definition>
+
 	<definition name="trainer" extends="common">
 		<put-attribute name="title" value="Trainer Page" />
 		<put-attribute name="body" value="/WEB-INF/jsp/trainer/trainer.jsp" />
 	</definition>
-	<definition name="createDocumentForm" extends="common">
-		<put-attribute name="title" value="Trainer Page" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/trainer/createDocumentForm.jsp" />
-	</definition>
+
 	<definition name="trainee" extends="common">
 		<put-attribute name="title" value="Trainee Page" />
 		<put-attribute name="body" value="/WEB-INF/jsp/trainee/trainee.jsp" />
+	</definition>
+
+	<definition name="failedAuthentication" template="/index.jsp">
 	</definition>
 
 

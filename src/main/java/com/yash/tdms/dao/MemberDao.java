@@ -46,4 +46,10 @@ public interface MemberDao {
 	 */
 	public void editMember(int id);
 
+	public boolean checkForAuthentication(String email, String password);
+
+	public Member getMemberByEmail(String email);
+
+	public boolean checkIfEmailExists(String email);
+
 }

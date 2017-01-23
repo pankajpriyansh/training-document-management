@@ -39,7 +39,6 @@ public class CategoryDaoImpl implements CategoryDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Override
 	public List<Category> getCategoriesBySectionId(int sectionId) {
 
 		return jdbcTemplate.query(
@@ -55,12 +54,14 @@ public class CategoryDaoImpl implements CategoryDao {
 			category.setId(resultSet.getInt("id"));
 			category.setName(resultSet.getString("name"));
 			category.setSection_id(resultSet.getInt("section_id"));
+			/*if (category.getName().contains(" ")) {
+				category.setName(category.getName().replaceAll(" ", "_"));
+			}*/
 			System.out.println(category);
 			return category;
 		}
 	}
 
-	@Override
 	public int addCategory(Category category) {
 
 		jdbcTemplate
@@ -76,10 +77,25 @@ public class CategoryDaoImpl implements CategoryDao {
 				Integer.class);
 	}
 
-	@Override
 	public int getTotalCategories() {
 		return jdbcTemplate.queryForObject("select count(*) from categories",
 				Integer.class);
+	}
+
+	public boolean checkIfCategoryExists(String categoryName, Integer sectionId) {
+
+		try {
+			jdbcTemplate
+					.queryForObject(
+							"select name from categories where name=? and section_id=?",
+							new Object[] { categoryName, sectionId },
+							String.class);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		return false;
 	}
 
 }

@@ -9,9 +9,20 @@ $(document)
 												'documentDescription');
 										var documentPath = $(this).attr(
 												'documentPath');
-
-										console.log(documentPath);
-										console.log(description);
+										var documentId = $(this).attr(
+												'documentId');
+										$('#' + documentId).removeClass(
+												'glyphicon-time').addClass(
+												'glyphicon-ok');
+										$.ajax({
+											url : "./markDocumentRead.html",
+											data : {
+												documentId : documentId
+											},
+											success : function(response) {
+												console.log(response);
+											}
+										});
 										$('.description p').html(description);
 
 										PDFJS.disableStream = true;
@@ -76,7 +87,7 @@ $(document)
 						}
 					};
 
-					var zoomed = false;
+					var zoomed = true;
 					var toggleZoom = function() {
 						console.log('inside toggle zoom');
 						zoomed = !zoomed;
