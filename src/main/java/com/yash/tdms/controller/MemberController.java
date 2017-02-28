@@ -33,15 +33,17 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/getMembers")
-	public void getMembers(Model model, HttpServletResponse response) throws IOException {
+	public void getMembers(Model model, HttpServletResponse response)
+			throws IOException {
 		String jsonOfMembers = new Gson().toJson(memberService.getAllMembers());
 		response.setContentType("application/json");
 		response.getWriter().append(jsonOfMembers);
 	}
 
 	@RequestMapping("/authenticate")
-	public void authenticate(@RequestParam("email") String email, @RequestParam("password") String password,
-			HttpSession session, HttpServletResponse response) throws IOException {
+	public void authenticate(@RequestParam("email") String email,
+			@RequestParam("password") String password, HttpSession session,
+			HttpServletResponse response) throws IOException {
 		if (memberService.checkForAuthentication(email, password)) {
 			Member member = memberService.getMemberByEmail(email);
 			session.setAttribute("loggedInUser", member);
@@ -54,7 +56,8 @@ public class MemberController {
 	}
 
 	@RequestMapping("/saveMember")
-	public void saveMember(@ModelAttribute("member") Member member, HttpServletResponse response) throws IOException {
+	public void saveMember(@ModelAttribute("member") Member member,
+			HttpServletResponse response) throws IOException {
 		if (memberService.checkIfEmailExists(member.getEmail())) {
 			response.getWriter().append("emailExists");
 		} else {
@@ -69,4 +72,6 @@ public class MemberController {
 		session.invalidate();
 		return "failedAuthentication";
 	}
+
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.yash.tdms.model.Document;
 import com.yash.tdms.model.Member;
 
 /**
@@ -26,5 +27,18 @@ public interface MemberService {
 	boolean checkIfEmailExists(String email);
 
 	List<Member> getAllMembers();
+
+	List getNonActiveMembers();
+
+	void activateMember(int memberId);
+
+	void changeRole(int memberId, int role);
+
+	List<Member> getAllTrainers();
+
+	List<Member> getAllMembersByBatchId(int batchId);
+
+	List getBatchMemberGraphData();
+
 
 }

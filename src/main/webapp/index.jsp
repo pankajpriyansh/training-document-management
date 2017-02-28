@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <head>
 <title>YTDMS</title>
 <link rel="icon" href="images/logo.png" />
@@ -75,9 +75,6 @@
 	</div>
 
 	<!-- Carousel -->
-
-
-
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators">
@@ -360,6 +357,16 @@
 				<p id="registrationFormMessageId" style="color: red"></p>
 				<form id="registrationForm">
 					<table>
+						<tr>
+							<td>Select Batch</td>
+							<td><select name="batchId">
+									<option disabled selected>Select</option>
+									<c:forEach items="${batches}" var="batch">
+										<option value="${batch.id}">${batch.name}</option>
+									</c:forEach>
+							</select></td>
+						</tr>
+
 						<tr>
 							<td>First Name</td>
 							<td><input type="text" class="form-control" name="firstname"

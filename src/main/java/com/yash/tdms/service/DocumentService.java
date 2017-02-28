@@ -25,7 +25,7 @@ public interface DocumentService {
 
 	void uploadFile(MultipartFile file, String workingDir, String filePath);
 
-	List<Document> getAllActiveDocuments();
+	List<Document> getAllActiveDocuments(int batchId, int memberId);
 
 	int getTotalDocuments(int memberId);
 
@@ -44,5 +44,23 @@ public interface DocumentService {
 	void updateReadEntryOfDocument(int documentId, int user_id);
 
 	Map<String, Object> getDocumentReadStatus(int documentId, int memberId);
+
+	List<Document> getAllDocumentsByBatchId(int batchId);
+
+	List getDocumentReadStautsList(int batchId, int documentId);
+
+	int getBatchIdByDocumentId(int documentId);
+
+	void changeStatusOfDocumentByDocumentIdForSpecificMember(int documentId,
+			int status, int memberId);
+
+	void hideDocumentForSpecificMember();
+
+	void shiftDocumentsByBatch(int fromBatchId, int toBatchId);
+
+	void shiftDocumentsByCategory(int documentId, int fromCategoryId,
+			int toCategory, String workingDir);
+
+	boolean documentNameExistsUnderThisBatch(int batchId, String documentName);
 
 }

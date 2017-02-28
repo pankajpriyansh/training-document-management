@@ -221,9 +221,15 @@ $(document)
 																// redirect
 																// based on
 																// roles
+																console
+																		.log(response.role);
 																switch (response.role) {
-																case 1:
+																case 1: {
+																	console
+																			.log('for admin');
+																	window.location.href = "./admin.html"
 																	break;
+																}
 																case 2:
 																	window.location.href = "./trainer.html";
 																	break;

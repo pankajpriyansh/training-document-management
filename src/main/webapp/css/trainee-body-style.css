@@ -48,7 +48,7 @@ P {
 	z-index: 999;
 	left: -7px;
 	color: black;
-	width: 90px;
+	width: 50px;
 	background: rgba(245, 245, 245, 0.89);
 	height: 450px;
 	overflow: hidden;
@@ -109,7 +109,9 @@ tr {
 }
 
 .table_width {
-	padding-left: 50px;
+	padding-left: 10px;
+	width: 80px;
+	overflow: hidden;
 }
 
 #table-wrapper {
@@ -163,13 +165,17 @@ tr {
 	margin-right: 2px;
 	margin-top: -10px;
 	background-color: transparent;
+	z-index: 999;
 }
 
 .btn1 {
+	vertical-align: center:  
 	border-radius: 40px;
 	font-size: 20px;
 	text-decoration: none;
 	float: left;
+	z-index: 999;
+	border-radius: 40px;
 }
 
 .btn2 {
@@ -177,16 +183,22 @@ tr {
 	font-size: 20px;
 	text-decoration: none;
 	float: right;
+	z-index: 999;
 }
 
 #nextpage {
 	background-color: transparent;
-	color: gray;
+	color: #182B2E;
 }
 
 #previouspage {
 	background-color: transparent;
-	color: gray;
+	color: #182B2E;
+}
+
+#previouspage span {
+	margin-top: 3px;
+	padding-bottom: 5px;
 }
 
 .display-section-container {
@@ -214,7 +226,7 @@ tr {
 }
 
 .pdf-nav {
-	top: 465px;
+	top: 440px;
 	left: 120px;
 	text-align: center;
 	z-index: 998;

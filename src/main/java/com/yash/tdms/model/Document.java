@@ -52,6 +52,16 @@ public class Document {
 
 	private int isShow;
 
+	private int batchId;
+
+	public int getBatchId() {
+		return batchId;
+	}
+
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -143,10 +153,12 @@ public class Document {
 	@Override
 	public String toString() {
 		return "Document [id=" + id + ", user_id=" + user_id + ", category_id="
-				+ category_id + ", name=" + name + ", createdBy=" + createdBy
-				+ ", modifiedBy=" + modifiedBy + ", createdDate=" + createdDate
+				+ category_id + ", name=" + name + ", description="
+				+ description + ", createdBy=" + createdBy + ", modifiedBy="
+				+ modifiedBy + ", createdDate=" + createdDate
 				+ ", modifiedDate=" + modifiedDate + ", isActive=" + isActive
-				+ ", filePath=" + filePath + ", isShow=" + isShow + "]";
+				+ ", filePath=" + filePath + ", isShow=" + isShow
+				+ ", batchId=" + batchId + "]";
 	}
 
 }

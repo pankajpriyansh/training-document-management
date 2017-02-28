@@ -54,9 +54,10 @@ public class CategoryDaoImpl implements CategoryDao {
 			category.setId(resultSet.getInt("id"));
 			category.setName(resultSet.getString("name"));
 			category.setSection_id(resultSet.getInt("section_id"));
-			/*if (category.getName().contains(" ")) {
-				category.setName(category.getName().replaceAll(" ", "_"));
-			}*/
+			/*
+			 * if (category.getName().contains(" ")) {
+			 * category.setName(category.getName().replaceAll(" ", "_")); }
+			 */
 			System.out.println(category);
 			return category;
 		}
@@ -98,4 +99,26 @@ public class CategoryDaoImpl implements CategoryDao {
 		return false;
 	}
 
+	@Override
+	public Category getCategoryFromDocumentId(int documentId) {
+		return jdbcTemplate
+				.queryForObject(
+						"SELECT * FROM categories WHERE id = (SELECT doc.`category_id` FROM documents doc WHERE id = ?) ",
+						new Object[] { documentId }, new CategoryRowMapper());
+	}
+
+	@Override
+	public List<Category> getCategoriesUnderASectionByDocumentId(int documentId) {
+		return jdbcTemplate
+				.query("SELECT * FROM categories cat WHERE cat.section_id  IN ( SELECT c.`section_id` FROM categories c WHERE id IN( SELECT doc.`category_id` FROM documents doc WHERE id = ?)) AND cat.id NOT IN (SELECT doc.`category_id` FROM documents doc WHERE id = ?)",
+						new Object[] { documentId, documentId },
+						new CategoryRowMapper());
+	}
+
+	@Override
+	public Category getCategoryByCategoryId(int fromCategoryId) {
+		return jdbcTemplate.queryForObject(
+				"SELECT * FROM categories WHERE id = ? ",
+				new Object[] { fromCategoryId }, new CategoryRowMapper());
+	}
 }

@@ -24,8 +24,10 @@ import com.yash.tdms.model.Category;
 import com.yash.tdms.model.Document;
 import com.yash.tdms.model.Member;
 import com.yash.tdms.model.Section;
+import com.yash.tdms.service.BatchService;
 import com.yash.tdms.service.CategoryService;
 import com.yash.tdms.service.DocumentService;
+import com.yash.tdms.service.MemberService;
 import com.yash.tdms.service.SectionService;
 
 /**
@@ -47,27 +49,32 @@ public class TrainerController {
 	@Autowired
 	private DocumentService documentService;
 
+	@Autowired
+	private BatchService batchService;
+
+	@Autowired
+	private MemberService memberService;
+
 	@RequestMapping("/trainer")
-	public String forwardToTrainerPage(HttpSession session, ModelMap modelMap) {
+	public String forwardToTrainerPage(HttpSession session, ModelMap modelMap)
+			throws IOException {
 		/** set logged in user to get its id on further pages */
 		if (session.getAttribute("loggedInUser") == null
 				|| ((Member) session.getAttribute("loggedInUser")).getRole() != 2) {
 			return "failedAuthentication";
 		}
-
 		List<Document> documents = documentService
 				.getAllDocumentsByUserId(((Member) session
 						.getAttribute("loggedInUser")).getId());
-		System.out.println(((Member) session.getAttribute("loggedInUser"))
-				.getId());
-		System.out.println(documents);
 		modelMap.addAttribute("totalSections",
 				sectionService.getTotalSections());
 		modelMap.addAttribute("totalCategories",
 				categoryService.getTotalCategories());
 		modelMap.addAttribute("totalDocuments", documents.size());
 		modelMap.addAttribute("sections", sectionService.getAllSections());
-		modelMap.addAttribute("documents", documents);
+		modelMap.addAttribute("totalBatches", batchService.getTotalBatches());
+		// modelMap.addAttribute("documents", documents);
+		modelMap.addAttribute("batches", batchService.getAllBatches());
 		return "trainer";
 	}
 
@@ -136,10 +143,11 @@ public class TrainerController {
 	 */
 	@RequestMapping("/getCategories")
 	public void getCategories(@RequestParam("sectionId") int sectionId,
-			HttpServletResponse response, Model model) throws IOException {
+			HttpServletResponse response, ModelMap model) throws IOException {
 		System.out.println("sectionId Value - > " + sectionId);
 		List<Category> categories = categoryService
 				.getCategoriesBySectionId(sectionId);
+		model.addAttribute("categoriesAccordingToSection", categories);
 		String jsonOfCategories = new Gson().toJson(categories);
 		response.setContentType("application/json");
 		response.getWriter().append(jsonOfCategories);
@@ -204,10 +212,13 @@ public class TrainerController {
 			@RequestParam("category") String categoryName, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		System.out
-				.println("---------------------------- Inside save Dopcument method --------------------------");
 		if (!file.getOriginalFilename().endsWith(".pdf")) {
 			response.getWriter().append("FileNotPDF");
+			return;
+		}
+		if (documentService.documentNameExistsUnderThisBatch(
+				document.getBatchId(), document.getName())) {
+			response.getWriter().append("alreadyExists");
 			return;
 		}
 		document.setFilePath(sectionName + "/" + categoryName + "/"
@@ -275,8 +286,10 @@ public class TrainerController {
 
 	@RequestMapping(value = "/checkDocumentStatus")
 	public void checkDocumentStatus(
-			@RequestParam("documentIdOfReadStatus") String documentId,
-			@RequestParam("memberId") String memberId, HttpSession session,
+
+	@RequestParam("documentIdOfReadStatus") String documentId,
+
+	@RequestParam("memberId") String memberId, HttpSession session,
 			HttpServletResponse response, Model model) throws IOException {
 		System.out.println(documentId + "   " + memberId);
 		Map<String, Object> map = documentService.getDocumentReadStatus(
@@ -288,6 +301,7 @@ public class TrainerController {
 			list.add(map.get("STATUS"));
 			list.add(map.get("createddate"));
 			list.add(map.get("modifieddate"));
+			list.add(map.get("count"));
 			String json = new Gson().toJson(list);
 			response.setContentType("application/json");
 			response.getWriter().append(json);
@@ -311,6 +325,162 @@ public class TrainerController {
 			documentService.changeStatusOfDocumentByDocumentId(
 					Integer.parseInt(documentId), 2);
 		response.getWriter().append("completed");
+	}
+
+	@RequestMapping(value = "/showDocumentsPage")
+	public String showDocumentsPage(HttpSession session, ModelMap modelMap)
+			throws IOException {
+		List<Document> documents = documentService
+				.getAllDocumentsByUserId(((Member) session
+						.getAttribute("loggedInUser")).getId());
+		modelMap.addAttribute("documents", documents);
+		modelMap.addAttribute("batches", batchService.getAllBatches());
+		modelMap.addAttribute("sections", sectionService.getAllSections());
+		return "showDocumentsPage";
+	}
+
+	@RequestMapping(value = "/readStatusOfDocument")
+	public String readStatusOfDocument(HttpSession session, ModelMap modelMap)
+			throws IOException {
+		modelMap.addAttribute("batches", batchService.getAllBatches());
+		return "readStatusOfDocumentPage";
+	}
+
+	@RequestMapping(value = "/getDocumentsByBatchId")
+	public void getDocumentsByBatchId(@RequestParam("batchId") int batchId,
+			HttpServletResponse response, ModelMap modelMap) throws IOException {
+
+		List<Document> documents = documentService
+				.getAllDocumentsByBatchId(batchId);
+		String jsonOfDocuments = new Gson().toJson(documents);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonOfDocuments);
+	}
+
+	@RequestMapping(value = "/checkDocumentReadStatus")
+	public String checkDocumentReadStatus(@RequestParam("batchId") int batchId,
+			@RequestParam("documentId") int documentId,
+			HttpServletResponse response, ModelMap modelMap) throws IOException {
+		List list = documentService.getDocumentReadStautsList(batchId,
+				documentId);
+		modelMap.addAttribute("documentReadStatusList", list);
+		/*
+		 * String jsonOfDocumentStatus = new Gson().toJson(list);
+		 * response.setContentType("application/json");
+		 * response.getWriter().append(jsonOfDocumentStatus);
+		 */
+
+		return "readStatusOfDocumentPage";
+	}
+
+	@RequestMapping(value = "/getListOfMembersByDocumentsBatchId")
+	public void getListOfMembersByDocumentsBatchId(
+			@RequestParam("documentId") int documentId,
+			HttpServletResponse response, ModelMap modelMap) throws IOException {
+		int batchId = documentService.getBatchIdByDocumentId(documentId);
+		List<Member> members = memberService.getAllMembersByBatchId(batchId);
+		String jsonOfMembers = new Gson().toJson(members);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonOfMembers);
+	}
+
+	@RequestMapping(value = "/onStatusChangeOfShowHideForSpecificMember")
+	public void onStatusChangeOfShowHideForSpecificMember(
+			@RequestParam("documentId") String documentId,
+			@RequestParam("status") String status,
+			@RequestParam("memberId") int memberId, HttpServletResponse response)
+			throws IOException {
+		/**
+		 * for specific member, its entry inserted in database, and after 2 days
+		 * , this entry will be automatically deleted
+		 */
+		documentService.changeStatusOfDocumentByDocumentIdForSpecificMember(
+				Integer.parseInt(documentId), 1, memberId);
+
+		response.getWriter().append("completed");
+	}
+
+	@RequestMapping(value = "/getSectionCategoryDocumentGraphData")
+	public void getSectionCategoryDocumentGraphData(
+			@RequestParam("batchId") int batchId, HttpServletResponse response)
+			throws IOException {
+		List list = sectionService.getSectionCategoryDocumentGraphData(batchId);
+		String jsonData = new Gson().toJson(list);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonData);
+	}
+
+	@RequestMapping(value = "/shiftDocumentsPage")
+	public String shiftDocumentsPage(HttpServletResponse response,
+			ModelMap modelMap, HttpSession session) throws IOException {
+		modelMap.addAttribute("batches", batchService.getAllBatches());
+		/*
+		 * List<Document> documents = documentService
+		 * .getAllDocumentsByUserId(((Member) session
+		 * .getAttribute("loggedInUser")).getId());
+		 * modelMap.addAttribute("documents", documents);
+		 */
+		return "shiftDocumentsPage";
+	}
+
+	@RequestMapping(value = "/shiftDocumentsByBatch")
+	public void shiftDocumentsByBatch(
+			@RequestParam("fromBatchId") int fromBatchId,
+			@RequestParam("toBatchId") int toBatchId,
+			HttpServletResponse response) throws IOException {
+		if (fromBatchId == toBatchId) {
+			response.getWriter().append("bothBatchSame");
+			return;
+		}
+		documentService.shiftDocumentsByBatch(fromBatchId, toBatchId);
+		response.getWriter().append("");
+	}
+
+	@RequestMapping(value = "/getCategoryFromDocumentId")
+	public void getCategoryFromDocumentId(
+			@RequestParam("documentId") int documentId,
+			HttpServletResponse response) throws IOException {
+		Category category = categoryService
+				.getCategoryFromDocumentId(documentId);
+		System.out.println(category);
+		String jsonData = new Gson().toJson(category);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonData);
+	}
+
+	@RequestMapping(value = "/getCategoriesUnderASectionByDocumentId")
+	public void getCategoriesUnderASectionByDocumentId(
+			@RequestParam("documentId") int documentId,
+			HttpServletResponse response) throws IOException {
+		List<Category> categories = categoryService
+				.getCategoriesUnderASectionByDocumentId(documentId);
+		String jsonData = new Gson().toJson(categories);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonData);
+	}
+
+	@RequestMapping(value = "/shiftDocumentsByCategory")
+	public void shiftDocumentsByCategory(
+			@RequestParam("documentId") int documentId,
+			@RequestParam("fromCategory") int fromCategoryId,
+			@RequestParam("toCategory") int toCategory,
+			HttpServletResponse response, HttpServletRequest request)
+			throws IOException {
+		String workingDir = request.getServletContext().getRealPath("");
+		documentService.shiftDocumentsByCategory(documentId, fromCategoryId,
+				toCategory, workingDir);
+		response.getWriter().append("");
+	}
+
+	@RequestMapping(value = "/getBatchMemberGraphData")
+	public void getBatchMemberGraphData(HttpServletResponse response)
+			throws IOException {
+		List list = memberService.getBatchMemberGraphData();
+		System.out.println(list);
+		String jsonData = new Gson().toJson(list);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonData);
+
 	}
 
 }

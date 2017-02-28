@@ -29,17 +29,14 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private SectionService sectionService;
 
-	
 	public List<Category> getCategoriesBySectionId(int sectionId) {
 		return categoryDao.getCategoriesBySectionId(sectionId);
 	}
 
-	
 	public int addCategory(Category category) {
 		return categoryDao.addCategory(category);
 	}
 
-	
 	public void makeCategoryNameFolder(String workingDir, Integer sectionId,
 			String categoryName) {
 		String sectionName = sectionService
@@ -55,14 +52,27 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 	}
 
-	
 	public int getTotalCategories() {
 		return categoryDao.getTotalCategories();
 	}
 
-	
 	public boolean checkIfCategoryExists(String categoryName, Integer sectionId) {
 		return categoryDao.checkIfCategoryExists(categoryName, sectionId);
+	}
+
+	@Override
+	public Category getCategoryFromDocumentId(int documentId) {
+		return categoryDao.getCategoryFromDocumentId(documentId);
+	}
+
+	@Override
+	public List<Category> getCategoriesUnderASectionByDocumentId(int documentId) {
+		return categoryDao.getCategoriesUnderASectionByDocumentId(documentId);
+	}
+
+	@Override
+	public Category getCategoryByCategoryId(int fromCategoryId) {
+		return categoryDao.getCategoryByCategoryId(fromCategoryId);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.yash.tdms.daoJdbcImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -97,6 +98,80 @@ public class SectionDaoImpl implements SectionDao {
 		}
 
 		return false;
+	}
+
+	@Override
+	public List getSectionCategoryDocumentGraphData(int batchId) {
+
+		List<Section> sections = jdbcTemplate.query("select * from sections",
+				new SectionRowMapper());
+		List listOfData = new ArrayList();
+		List listOfSectionAndTotalDocuments = jdbcTemplate
+				.query("SELECT sec.name AS sectionName,COUNT(*) AS totalDocuments FROM sections sec , categories cat, documents doc WHERE doc.category_id=cat.`id` AND cat.`section_id`=sec.id AND doc.batch_id=?  GROUP BY sec.id;",
+						new Object[] { batchId },
+						new SectionAndTotalDocumentsRowMapper());
+
+		List listOfSectionAndTotalCategories = jdbcTemplate
+				.query("SELECT sec.name AS sectionName,COUNT(*) AS totalCategories FROM sections sec,categories cat WHERE sec.id=cat.section_id GROUP BY sec.name;",
+						new SectionAndTotalCategoriesRowMapper());
+		sections.forEach((i) -> {
+			List list = new ArrayList();
+			list.add(i.getName());
+			list.add(getTotalCategories(listOfSectionAndTotalCategories,
+					i.getName()));
+			list.add(getTotalDocuments(listOfSectionAndTotalDocuments,
+					i.getName()));
+			System.out.println(list);
+			listOfData.add(list);
+		});
+		System.out.println(listOfData);
+		return listOfData;
+	}
+
+	private int getTotalDocuments(List listOfSectionAndTotalDocuments,
+			String sectionName) {
+		for (Object object : listOfSectionAndTotalDocuments) {
+			List list = (List) object;
+			if (((String) list.get(1)).equals(sectionName)) {
+				return (int) list.get(0);
+			}
+
+		}
+		return 0;
+	}
+
+	private int getTotalCategories(List listOfSectionAndTotalCategories,
+			String sectionName) {
+		for (Object object : listOfSectionAndTotalCategories) {
+			List list = (List) object;
+			if (((String) list.get(1)).equals(sectionName)) {
+				return (int) list.get(0);
+			}
+
+		}
+		return 0;
+	}
+
+	private static final class SectionAndTotalDocumentsRowMapper implements
+			RowMapper<List> {
+
+		public List mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+			List list = new ArrayList();
+			list.add(resultSet.getInt("totalDocuments"));
+			list.add(resultSet.getString("sectionName"));
+			return list;
+		}
+	}
+
+	private static final class SectionAndTotalCategoriesRowMapper implements
+			RowMapper<List> {
+
+		public List mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+			List list = new ArrayList();
+			list.add(resultSet.getInt("totalCategories"));
+			list.add(resultSet.getString("sectionName"));
+			return list;
+		}
 	}
 
 }

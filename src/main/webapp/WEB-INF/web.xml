@@ -48,5 +48,10 @@
 		</taglib>
 	</jsp-config>
 
-
+  <listener>
+	<listener-class>
+             com.yash.listener.MyServletContextListener
+        </listener-class>
+   </listener>
+ 
 </web-app>

@@ -28,4 +28,10 @@ public interface CategoryService {
 
 	boolean checkIfCategoryExists(String categoryName, Integer sectionId);
 
+	Category getCategoryFromDocumentId(int documentId);
+
+	List<Category> getCategoriesUnderASectionByDocumentId(int documentId);
+
+	Category getCategoryByCategoryId(int fromCategoryId);
+
 }

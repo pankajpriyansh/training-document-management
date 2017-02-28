@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * on controller this model will be mapped with Category Creation and update
  * forms.
  * 
- * @author sharma.pankaj
+ * @author goyal.ayush
  *
  */
 @Component

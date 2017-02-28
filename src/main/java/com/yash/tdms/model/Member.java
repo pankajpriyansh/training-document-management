@@ -73,18 +73,16 @@ public class Member {
 	private Date modifiedDate;
 
 	/**
-	 * check weather the document is readed by the user or not,
 	 * 
-	 * 1. read , 2. unread , 3. not started
 	 */
-	private int read;
+	private int batchId;
 
-	public int getRead() {
-		return read;
+	public int getBatchId() {
+		return batchId;
 	}
 
-	public void setRead(int read) {
-		this.read = read;
+	public void setBatchId(int batchId) {
+		this.batchId = batchId;
 	}
 
 	public int getId() {
@@ -190,7 +188,8 @@ public class Member {
 				+ ", password=" + password + ", isActive=" + isActive
 				+ ", role=" + role + ", createdBy=" + createdBy
 				+ ", modifiedBy=" + modifiedBy + ", createdDate=" + createdDate
-				+ ", modifiedDate=" + modifiedDate + ", read=" + read + "]";
+				+ ", modifiedDate=" + modifiedDate + ", batchId=" + batchId
+				+ "]";
 	}
 
 }

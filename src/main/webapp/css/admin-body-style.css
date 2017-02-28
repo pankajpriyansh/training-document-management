@@ -1,0 +1,62 @@
+/* Set gray background color and 100% height */
+.sidenav {
+	overflow: hidden;
+	overflow-x: hidden;
+	padding-top: 20px;
+	margin-top: 12px;
+	background-color: #AAB7B8;
+	height: 537px;
+	box-shadow: 0px 2px 0px 2px #D1D1D1;
+	border-radius: 0px 15px 15px 0px;
+}
+
+.sidenav:hover {
+	overflow: scroll;
+	overflow-x: hidden;
+}
+
+/*
+ *  scrollbar
+ */
+.sidenav::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #AAB7B8;
+	border-radius: 20px;
+}
+
+.sidenav::-webkit-scrollbar {
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.sidenav::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #5bc0de
+}
+
+.overflow {
+	overflow: hidden;
+	overflow-x: hidden;
+	height: 550px;
+}
+
+.overflow:hover {
+	overflow: scroll;
+	overflow-x: hidden;
+}
+
+.overflow::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #F5F5F5;
+	border-radius: 10px;
+}
+
+.overflow::-webkit-scrollbar {
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.overflow::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: #5bc0de
+}

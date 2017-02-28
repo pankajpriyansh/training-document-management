@@ -35,4 +35,30 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.getAllMembers();
 	}
 
+	public List getNonActiveMembers() {
+		return memberDao.getNonActiveMembers();
+	}
+
+	public void activateMember(int memberId) {
+		memberDao.activateMember(memberId);
+	}
+
+	public void changeRole(int memberId, int role) {
+		memberDao.changeRole(memberId, role);
+	}
+
+	public List<Member> getAllTrainers() {
+		return memberDao.getAllTrainers();
+	}
+
+	@Override
+	public List<Member> getAllMembersByBatchId(int batchId) {
+		return memberDao.getAllMembersByBatchId(batchId);
+	}
+
+	@Override
+	public List getBatchMemberGraphData() {
+		return memberDao.getBatchMemberGraphData();
+	}
+
 }

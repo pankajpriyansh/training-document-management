@@ -52,4 +52,16 @@ public interface MemberDao {
 
 	public boolean checkIfEmailExists(String email);
 
+	public List getNonActiveMembers();
+
+	public void activateMember(int memberId);
+
+	public void changeRole(int memberId, int role);
+
+	public List<Member> getAllTrainers();
+
+	public List<Member> getAllMembersByBatchId(int batchId);
+
+	public List getBatchMemberGraphData();
+
 }

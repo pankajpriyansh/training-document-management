@@ -11,19 +11,74 @@
 	<definition name="common" template="/WEB-INF/layout/classic.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+		<put-attribute name="sideNavBar" value="" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
 	</definition>
 
+
+	<!-- Trainer Related Mapping Starts -->
 	<definition name="trainer" extends="common">
 		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/trainer/trainerSideNavBar.jsp" />
 		<put-attribute name="body" value="/WEB-INF/jsp/trainer/trainer.jsp" />
 	</definition>
+
+
+	<definition name="readStatusOfDocumentPage" extends="trainer">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/trainer/trainerSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/trainer/readStatusOfDocument.jsp" />
+	</definition>
+
+	<definition name="shiftDocumentsPage" extends="trainer">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/trainer/trainerSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/trainer/shiftDocumentsPage.jsp" />
+	</definition>
+
+
+	<definition name="showDocumentsPage" extends="trainer">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/trainer/trainerSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/trainer/showDocuments.jsp" />
+	</definition>
+	<!-- Trainer Related Mapping Ends -->
+
+
+	<!-- Trainee Related Mapping Starts -->
 
 	<definition name="trainee" extends="common">
 		<put-attribute name="title" value="Trainee Page" />
 		<put-attribute name="body" value="/WEB-INF/jsp/trainee/trainee.jsp" />
 	</definition>
+	<!-- Trainee Related Mapping Ends -->
+
+	<!-- Admin Related Mapping Starts -->
+
+	<definition name="admin" extends="common">
+		<put-attribute name="title" value="Admin Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/admin.jsp" />
+	</definition>
+
+	<definition name="registrationRequestPage" extends="common">
+		<put-attribute name="title" value="Admin Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/registrationRequestPage.jsp" />
+	</definition>
+
+	<!-- Admin Related Mapping ends -->
 
 	<definition name="failedAuthentication" template="/index.jsp">
 	</definition>

@@ -32,4 +32,6 @@ public interface SectionDao {
 	int getTotalSections();
 
 	boolean checkIfSectionExists(String sectionName);
+
+	List getSectionCategoryDocumentGraphData(int batchId);
 }

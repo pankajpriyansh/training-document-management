@@ -7,126 +7,157 @@
 	rel="stylesheet"
 	integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
 	crossorigin="anonymous">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 <script
 	src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/trainer-body-style.css" />
 <script src="js/trainer.js"></script>
+
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script
+	src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet"
+	href="https://www.amcharts.com/lib/3/plugins/export/export.css"
+	type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
 <div class="container-fluid text-center">
+	<div class="col-sm-12 text-left">
+		<div class="col-sm-4 text-left">
+			Select Batch : <select id="batchIdForGraphData">
+				<option disabled selected>Select</option>
+
+				<c:forEach items="${batches}" var="batch" varStatus="status">
+					<c:choose>
+						<c:when test="${status.index == 0}">
+							<option value="${batch.id}" selected>${batch.name}</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${batch.id}">${batch.name}</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>
+		</div>
+	</div>
+	<div id="charts">
+
+		<!-- Graph1 Division -->
+		<div id="chartdiv"></div>
+		<div id="chartdivForBatch"></div>
+	</div>
 	<div class="row content ">
-		<div class="col-sm-2 sidenav">
+		<!-- <div class="col-sm-2 sidenav">
 			<h3>Welcome</h3>
-			<!-- Links to be displayed on side nav bar -->
+			Links to be displayed on side nav bar
 			<a href="#" id="readStatusLinkId">Read Status</a>
 
+		</div> -->
+
+		<div class="col-sm-12 text-left" id="display-section">
+
+			<div class="col-sm-2 text-left ">
+				<div class="col-sm-11 card" id="section">
+					<i class="fa fa-pie-chart fa-4" aria-hidden="true"></i>
+					<h3>SECTION</h3>
+					<hr>
+					<h4>TOTAL</h4>
+					<div id="totalSectionId">${totalSections}</div>
+				</div>
+			</div>
+
+			<div class="col-sm-2 text-left ">
+				<div class="col-sm-11 card" id="category">
+					<i class="fa fa-th-large icon"></i>
+					<h3>CATEGORY</h3>
+					<hr>
+					<h4>TOTAL</h4>
+					<div id="totalCategoryId">${totalCategories}</div>
+				</div>
+			</div>
+			<div class="col-sm-2 text-left ">
+				<div class="col-sm-11 card" id="document">
+					<i class="fa fa-upload" aria-hidden="true"></i>
+					<h3>DOCUMENT</h3>
+					<hr>
+					<h4>TOTAL</h4>
+					<div id="totalDocumentId">${totalDocuments}</div>
+				</div>
+			</div>
+
+			<div class="col-sm-2 text-left ">
+				<div class="col-sm-11 card" id="batch">
+					<i class="fa fa-users" aria-hidden="true"></i>
+					<h3>BATCH</h3>
+					<hr>
+					<h4>TOTAL</h4>
+					<div id="totalBatchId">${totalBatches}</div>
+				</div>
+			</div>
+			<div class="col-sm-2 text-left ">
+				<div class="col-sm-11 card" id="updates">
+					<i class="fa fa-newspaper-o" aria-hidden="true"></i>
+					<h3>UPDATES</h3>
+					<hr>
+					<h4>TOTAL</h4>
+					<div id=""></div>
+				</div>
+			</div>
+			<div class="col-sm-2 text-left ">
+				<div class="col-sm-11 card" id="blog">
+					<i class="fa fa-book" aria-hidden="true"></i>
+					<h3>BLOG</h3>
+					<hr>
+					<h4>TOTAL</h4>
+					<div id=""></div>
+				</div>
+			</div>
+
+
 		</div>
 
-		<div class="col-sm-10 text-left" id="display-section">
-
-			<div class="col-sm-3 text-left card" id="section">
-				<i class="fa fa-pie-chart fa-4" aria-hidden="true"></i>
-				<h3>SECTION</h3>
-				<hr>
-				<h4>TOTAL</h4>
-				<div id="totalSectionId">${totalSections}</div>
-			</div>
-
-			<div class="col-sm-3 text-left card" id="category">
-				<i class="fa fa-th-large icon"></i>
-				<h3>CATAGORY</h3>
-				<hr>
-				<h4>TOTAL</h4>
-				<div id="totalCategoryId">${totalCategories}</div>
-
-			</div>
-			<div class="col-sm-3 text-left card" id="document">
-				<i class="fa fa-upload" aria-hidden="true"></i>
-				<h3>DOCUMENT</h3>
-				<hr>
-				<h4>TOTAL</h4>
-				<div id="totalDocumentId">${totalDocuments}</div>
-
-			</div>
-		</div>
-
-		<div class="col-sm-3 text-left" id="Addmore-button">
+		<div class="col-sm-2 text-left" id="Addmore-button">
 			<button type="button"
-				class="btn btn-info btn-lg read_more_button hvr-rectangle-out"
+				class="btn btn-primary  read_more_button hvr-rectangle-out"
 				data-toggle="modal" id="addMoreSectionButtonId">ADD MORE</button>
 		</div>
-		<div class="col-sm-3 text-left" id="Addmore-button">
-
+		<div class="col-sm-2 text-left" id="Addmore-button">
 			<button type="button"
-				class="btn btn-info btn-lg read_more_button hvr-rectangle-out"
+				class="btn btn-primary  read_more_button hvr-rectangle-out"
 				data-toggle="modal" id="addMoreCategoryButtonId">ADD MORE</button>
 
 		</div>
-		<div class="col-sm-3 text-left" id="Addmore-button">
-
+		<div class="col-sm-2 text-left" id="Addmore-button">
 			<button type="button"
-				class="btn btn-info btn-lg read_more_button hvr-rectangle-out"
+				class="btn btn-primary  read_more_button hvr-rectangle-out"
 				data-toggle="modal" id="addMoreDocumentButtonId">ADD MORE</button>
 		</div>
 
-		<div class="col-sm-10 overflow ">
-			<br>
 
-			<!-- 	<!-- Check whether read or not 
-			<div id="readStatusDivId">asdiuasdku</div>
- -->
 
-			<table
-				class="col-md-12 table table-striped table-bordered table-hover"
-				id="documentsTableId">
-				<thead class="thead-inverse">
-					<tr id="heading">
-						<th>S.No.</th>
-						<th>Section <select id='filterText'
-							style='display: inline-block' onchange='filterText()'>
-								<option disabled selected>Select</option>
-								<c:forEach items="${sections}" var="section">
-									<option value="${section.name}">${section.name}</option>
-								</c:forEach>
-								<option value="ALL">ALL</option>
-						</select>
-						</th>
-						<th>Category</th>
-						<th>Name</th>
-						<th>Operation</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-
-					<c:forEach items="${documents}" var="document" varStatus="status">
-						<tr class="contentOfDocuments">
-							<c:set var="filePathArray"
-								value="${fn:split(document.getFilePath(), '/')}" />
-							<td>${status.index + 1}</td>
-							<td>${filePathArray[0]}</td>
-							<td>${filePathArray[1]}</td>
-							<td>${document.getName()}</td>
-							<td><input type="radio" documentId="${document.getId()}"
-								name="action${document.getId()}" value="show"
-								<c:if test="${document.getIsShow() == 1}"> checked</c:if> />SHOW
-								<input type="radio" name="action${document.getId()}"
-								documentId="${document.getId()}" value="hide"
-								<c:if test="${document.getIsShow() == 2}"> checked</c:if> />HIDE</td>
-							<td><button class="btn btn-primary btn-xs editDoc "
-									documentId="${document.getId()}">Edit</button>
-								<button class="btn btn-danger btn-xs "
-									id="deleteDocumentButtonId" documentId="${document.getId()}">Delete</button></td>
-						</tr>
-					</c:forEach>
-
-				</tbody>
-			</table>
+		<div class="col-sm-2 text-left" id="Addmore-button">
+			<button type="button"
+				class="btn btn-primary  read_more_button hvr-rectangle-out"
+				data-toggle="modal" id="addMoreBatchButtonId">ADD MORE</button>
+		</div>
+		<div class="col-sm-2 text-left" id="Addmore-button">
+			<button type="button"
+				class="btn btn-primary  read_more_button hvr-rectangle-out"
+				data-toggle="modal" id="">ADD MORE</button>
+		</div>
+		<div class="col-sm-2 text-left" id="Addmore-button">
+			<button type="button"
+				class="btn btn-primary  read_more_button hvr-rectangle-out"
+				data-toggle="modal" id="">ADD MORE</button>
 		</div>
 
 	</div>
@@ -154,7 +185,7 @@
 						</tr>
 						<tr>
 							<td colspan="2"><button type="submit"
-									id="submitButtonOfCreateNewSection" class="btn btn-success">Submit</button></td>
+									id="submitButtonOfCreateNewSection" class="btn btn-primary">Submit</button></td>
 						</tr>
 					</table>
 
@@ -204,7 +235,7 @@
 						</tr>
 						<tr>
 							<td colspan="2"><button type="submit"
-									id="submitButtonOfCreateNewCategory" class="btn btn-success">Submit</button></td>
+									id="submitButtonOfCreateNewCategory" class="btn btn-primary">Submit</button></td>
 						</tr>
 					</table>
 				</form>
@@ -229,6 +260,15 @@
 
 					<table>
 						<tr>
+							<td>Select Batch</td>
+							<td><select name="batchId">
+									<option disabled selected>Select</option>
+									<c:forEach items="${batches}" var="batch">
+										<option value="${batch.id}">${batch.name}</option>
+									</c:forEach>
+							</select></td>
+						</tr>
+						<tr>
 							<td>Section</td>
 							<td class="dropdown"><input list="sections" name="section"
 								id="selectSectionBoxIdInCreateDocument"
@@ -252,7 +292,7 @@
 						<tr>
 							<td>Name</td>
 							<td><input type="text" class="form-control" name="name"
-								placeholder="Enter name" required></td>
+								id="DocumentNameID" placeholder="Enter name" required></td>
 						</tr>
 						<tr>
 							<td>Desciption</td>
@@ -266,7 +306,7 @@
 						</tr>
 						<tr>
 							<td colspan="2"><button type="submit"
-									id="submitButtonOfCreateNewDocument" class="btn btn-success">Submit</button></td>
+									id="submitButtonOfCreateNewDocument" class="btn btn-primary">Submit</button></td>
 						</tr>
 					</table>
 				</form>
@@ -276,7 +316,7 @@
 </div>
 
 
-<!-- Modal 4 -->
+<!-- Modal 4 
 <div id="editDocumentModal" class="modal">
 	<div class="modal-dialog">
 		<div class="modal-content"">
@@ -308,77 +348,38 @@
 		</div>
 	</div>
 </div>
-<!-- /Modal 4 -->
+ /Modal 4 -->
 
 
-<!-- Modal 5 -->
-<div id="CheckDocumentReadStatusModal" class="modal">
+
+
+<!-- Modal 6 -->
+<div id="BatchModal" class="modal">
 	<div class="modal-dialog">
 		<!-- Modal content -->
 		<div class="modal-content"">
 			<div class="modal-header">
-				<button type="button" class="close"
-					id="closeCheckDocumentReadStatusModalId">&times;</button>
-				<h3 class="modal-title" align="center">Read Status</h3>
+				<button type="button" class="close" id="closeNewBatchModelId">&times;</button>
+				<h4 class="modal-title">Batch</h4>
 			</div>
 			<div class="modal-body">
-				<p id="checkDocumentReadStatusFormMessageId" style="color: red"></p>
-				<form id="checkDocumentReadStatusForm"
-					name="checkDocumentReadStatusForm">
+				<p id="newBatchFormMessageId" style="color: red"></p>
+				<form id="newBatchForm">
 					<table>
 						<tr>
-							<td>Document</td>
-							<td class="dropdown"><input list="documents" name="document"
-								id="checkDocumentReadStatusFormDocumentsId"
-								placeholder="Select Document" required> <datalist
-									id="documents">
-									<c:forEach items="${documents}" var="document">
-										<option id="${document.name}" value="${document.name}"
-											documentId="${document.id}">
-									</c:forEach>
-								</datalist></td>
+							<td>NAME</td>
+							<td><input type="text" class="form-control" name="batchName"
+								id="batchName" placeholder="Enter NAME " required></td>
 						</tr>
 						<tr>
-							<td>Member</td>
-							<td class="dropdown"><input list="members" name="member"
-								id="checkDocumentReadStatusFormMemberId"
-								placeholder="Select Member" required> <datalist
-									id="members">
-									<%-- <c:forEach items="${members}" var="member">
-										<option id="${member.firstname}" value="${member.firstname}"
-											documentId="${member.id}">
-									</c:forEach> --%>
-								</datalist></td>
-							<td><input type="text" id="hiddenFieldMemberId"
-								name="memberId" style="display: none" /></td>
-
-						</tr>
-						<tr>
-							<td colspan="2" align="right"><button type="submit"
-									id="submitButtonOfcheckDocumentReadStatusForm"
-									class="btn btn-warning">Check</button></td>
+							<td colspan="2"><button type="submit"
+									id="submitButtonOfCreateNewBatch" class="btn btn-primary">Submit</button></td>
 						</tr>
 					</table>
-				</form>
-				<br>
-				<table>
-					<tr>
-						<td>Status :</td>
-						<td><span id="statusRead" style="color: green"></span> <span
-							id="statusUnRead" style="color: red"></span></td>
-					</tr>
-					<tr>
-						<td>First Seen :</td>
-						<td><span id="FirstSeen" style="color: green"></span>
-					</tr>
-					<tr>
-						<td>Last Seen :</td>
-						<td><span id="LastSeen" style="color: green"></span>
-					</tr>
-				</table>
 
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
-<!-- /Modal5 -->
+<!-- /Modal 6 -->

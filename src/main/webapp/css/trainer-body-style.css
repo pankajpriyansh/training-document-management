@@ -49,13 +49,55 @@
 	height: auto;
 }
 
+#chartdiv {
+	width: 40%;
+	height: 230px;
+	float: left;
+}
+
+#chartdivForBatch {
+	float: right;
+	width: 40%;
+	height: 190px;
+	margin-top: 30px;
+	margin-right: 50px;
+}
+
+#display-section {
+	margin-top: 10px;
+}
+
+.shiftcard {
+	width: 350px;
+	height: 100px;
+	border-color: red;
+	border: 2px;
+	background-color: #D6DBDF;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	opacity: 0.8;
+	border-radius: 5px 5px 15px 15px;
+	text-align: center;
+	box-shadow: 1px 1px 1px 1px #ABB2B9;
+}
+
+.shiftcard tr {
+	padding: 10px;
+}
+
+.shiftcard td {
+	padding: 10px;
+}
+
 .card {
+	width: 13%;
+	margin-right: 17px;
 	height: 150px;
 	border-color: red;
 	border: 2px;
 	margin-top: 10px;
-	margin-left: 40px;
-	margin-right: 40px;
+	margin-left: -10px;
 	opacity: 0.8;
 	border-radius: 5px 5px 15px 15px;
 	text-align: center;
@@ -64,11 +106,12 @@
 
 .card i {
 	padding-top: 10px;
-	font-size: 50px;
+	font-size: 40px;
 }
 
 .card h3 {
 	float: right;
+	font-size: 18px !important;
 	display: -webkit-inline-box;
 }
 
@@ -84,13 +127,25 @@
 	background-color: #E67E22;
 }
 
+#batch {
+	background-color: #EC7063;
+}
+
+#updates { /* #85C1E9*/
+	background-color: #A569BD;
+}
+
+#blog {
+	background-color: #5499C7;
+}
+
 #Addmore-button {
-	margin-left: 20px;
+	margin-left: -5px;
 	text-align: center;
 }
 
 .content {
-	height: 537px;
+	height: 235px;
 }
 
 .logout {
@@ -116,7 +171,7 @@
 }
 
 .read_more_button {
-	font-size: 14px;
+	font-size: 10px;
 }
 
 .read_more_button :hover {
@@ -168,19 +223,22 @@ td a {
 } */
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .content {
-	height: 537px;
+	height: 337px;
 }
 
 /* Set gray background color and 100% height */
+.navbar {
+	border-radius: 0px;
+}
+
 .sidenav {
 	overflow: hidden;
 	overflow-x: hidden;
 	padding-top: 20px;
 	margin-top: 12px;
 	background-color: #AAB7B8;
-	height: 537px;
+	height: 50px;
 	box-shadow: 0px 2px 0px 2px #D1D1D1;
-	border-radius: 0px 15px 15px 0px;
 }
 
 .sidenav:hover {
@@ -210,13 +268,12 @@ td a {
 .overflow {
 	overflow: hidden;
 	overflow-x: hidden;
-	height: 320px;
+	max-height: 450px;
 }
 
 .overflow:hover {
 	overflow: scroll;
 	overflow-x: hidden;
-	height: 320px;
 }
 
 .overflow::-webkit-scrollbar-track {

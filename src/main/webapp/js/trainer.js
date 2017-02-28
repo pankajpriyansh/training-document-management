@@ -2,6 +2,200 @@ $(document)
 		.ready(
 				function() {
 
+					var getBatchMemberGraphData = function() {
+						var getJson = function() {
+							var json = "";
+							$.ajaxSetup({
+								async : false
+							});
+							$.ajax({
+								url : "./getBatchMemberGraphData.html",
+								success : function(response) {
+									json = json + "[";
+									response.forEach(function(item) {
+										json = json + "{";
+										json = json + "\"totalMembers\" : \" "
+												+ item[0] + " \",";
+										json = json + "\"batchName\" : \" "
+												+ item[1] + " \" ";
+										json = json + "},";
+									});
+									json = json.substring(0, json
+											.lastIndexOf(','));
+									json = json + "]";
+								}
+							});
+							console.log(typeof (json));
+							return json;
+						}
+						try {
+							console.log(getJson());
+							console.log("test");
+
+							var charData = JSON.parse(getJson());
+							console.log("test1");
+
+							console.log(typeof (charData));
+						} catch (err) {
+						}
+
+						console.log('chardata ->', charData);
+						var chart = AmCharts
+								.makeChart(
+										"chartdivForBatch",
+										{
+											"type" : "serial",
+											// "theme" : "light",
+											"dataProvider" : charData,
+											"valueAxes" : [ {
+												"gridColor" : "#FFFFFF",
+												"gridAlpha" : 0.2,
+												"dashLength" : 0
+											} ],
+											"gridAboveGraphs" : true,
+											"startDuration" : 1,
+											"graphs" : [ {
+												"balloonText" : "[[category]]: <b>[[value]]</b> members",
+												"fillAlphas" : 0.8,
+												"lineAlpha" : 0.2,
+												"type" : "column",
+												"valueField" : "totalMembers"
+											} ],
+											"chartCursor" : {
+												"categoryBalloonEnabled" : false,
+												"cursorAlpha" : 0,
+												"zoomable" : false
+											},
+											"categoryField" : "batchName",
+											"categoryAxis" : {
+												"gridPosition" : "start",
+												"gridAlpha" : 0,
+												"tickPosition" : "start",
+												"tickLength" : 20
+											},
+											"export" : {
+												"enabled" : true
+											}
+
+										});
+
+					}
+					getBatchMemberGraphData();
+					var getSectionCategoryDocumentGraphData = function() {
+						var batchId = $('#batchIdForGraphData').val();
+						var getJson = function() {
+							var json = "";
+							$.ajaxSetup({
+								async : false
+							});
+							$
+									.ajax({
+										url : "./getSectionCategoryDocumentGraphData.html",
+										data : {
+											batchId : batchId
+										},
+										success : function(response) {
+											json = json + "[";
+											response
+													.forEach(function(item) {
+														json = json + "{";
+														json = json
+																+ "\"sectionName\" : \" "
+																+ item[0]
+																+ " \",";
+														json = json
+																+ "\"totalCategories\" : \" "
+																+ item[1]
+																+ " \",";
+														json = json
+																+ "\"totalDocuments\" : \" "
+																+ item[2]
+																+ " \" ";
+														json = json + "},";
+													});
+											json = json.substring(0, json
+													.lastIndexOf(','));
+											json = json + "]";
+										}
+									});
+							console.log(json);
+							return json;
+
+						}
+						try {
+							var charData = JSON.parse(getJson());
+						} catch (err) {
+						}
+						console.log(typeof (charData));
+
+						var chart = AmCharts
+								.makeChart(
+										"chartdiv",
+										{
+											"type" : "serial",
+											"addClassNames" : true,
+											"theme" : "light",
+											"autoMargins" : false,
+											"marginLeft" : 30,
+											"marginRight" : 8,
+											"marginTop" : 50,
+											"marginBottom" : 26,
+											"balloon" : {
+												"adjustBorderColor" : false,
+												"horizontalPadding" : 10,
+												"verticalPadding" : 8,
+												"color" : "red"
+											},
+
+											"dataProvider" : charData,
+											"valueAxes" : [ {
+												"axisAlpha" : 0,
+												"position" : "left"
+											} ],
+											"startDuration" : 1,
+											"graphs" : [
+													{
+														"alphaField" : "alpha",
+														"balloonText" : "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span>																	  [[additional]]</span>",
+														"fillAlphas" : 1,
+														"title" : "Categories",
+														"type" : "column",
+														"valueField" : "totalCategories",
+														"dashLengthField" : "dashLengthColumn"
+													},
+													{
+														"id" : "graph2",
+														"balloonText" : "<span style='font-size:12px;'>[[title]] in [[category]] :<br><span style='font-size:20px;'>[[value]]</span>  [[additional]]</span>",
+														"bullet" : "round",
+														"lineThickness" : 3,
+														"bulletSize" : 7,
+														"bulletBorderAlpha" : 1,
+														"bulletColor" : "#FFFFFF",
+														"useLineColorForBulletBorder" : true,
+														"bulletBorderThickness" : 3,
+														"fillAlphas" : 0,
+														"lineAlpha" : 1,
+														"title" : "Documents",
+														"valueField" : "totalDocuments",
+														"dashLengthField" : "dashLengthLine"
+													} ],
+											"categoryField" : "sectionName",
+											"categoryAxis" : {
+												"gridPosition" : "start",
+												"axisAlpha" : 0,
+												"tickLength" : 0
+											},
+											"export" : {
+												"enabled" : true
+											}
+										});
+
+					}
+					getSectionCategoryDocumentGraphData();
+					$('#batchIdForGraphData').change(function(e) {
+						getSectionCategoryDocumentGraphData();
+
+					});
 					var dataListOfSections = document
 							.getElementById('sections');
 					var dataListOfCategories = document
@@ -14,13 +208,12 @@ $(document)
 							.getElementById('DocumentModal');
 					var editDocumentModal = document
 							.getElementById('editDocumentModal');
-					var CheckDocumentReadStatusModal = document
-							.getElementById('CheckDocumentReadStatusModal');
-					/*
-					 * var documentsTableId = document
-					 * .getElementById('documentsTableId'); var readStatusDivId =
-					 * document .getElementById('readStatusDivId');
-					 */
+					var batchModal = document.getElementById('BatchModal');
+					var documentShowStatusModal = document
+							.getElementById('documentShowStatusModal');
+					var dataListOfDocuments = document
+							.getElementById('documentsOfShiftDocumentsPage');
+					console.log(dataListOfDocuments);
 					/**
 					 * button clicked , create new section modal open
 					 */
@@ -52,6 +245,16 @@ $(document)
 					});
 
 					/**
+					 * button clicked , create new Batch modal open
+					 */
+					$('#addMoreBatchButtonId').click(function() {
+						console.log(' Batch button clicked ');
+						batchModal.style.display = "block";
+						$('#newBatchFormMessageId').html('');
+						$("form#newBatchForm").trigger("reset");
+					});
+
+					/**
 					 * close button to close new section modal
 					 */
 					$('#closeNewSectionModelId').click(function() {
@@ -60,7 +263,7 @@ $(document)
 					});
 
 					/**
-					 * close button to close new section modal
+					 * close button to close new category modal
 					 */
 					$('#closeNewCategoryModelId').click(function() {
 						console.log(' Section close clicked ');
@@ -68,20 +271,28 @@ $(document)
 					});
 
 					/**
-					 * close button to close new section modal
+					 * close button to close new document modal
 					 */
 					$('#closeNewDocumentModelId').click(function() {
-						console.log(' Section close clicked ');
-
 						documentModal.style.display = "none";
+					});
+
+					/**
+					 * close button to close new batch modal
+					 */
+					$('#closeNewBatchModelId').click(function() {
+						batchModal.style.display = "none";
 					});
 
 					/**
 					 * close button to close new section modal
 					 */
 					$('#closeEditDocumentModelId').click(function() {
-						console.log(' EditDocument close clicked ');
 						editDocumentModal.style.display = "none";
+					});
+
+					$('#closeDocumentShowStatusModal').click(function() {
+						documentShowStatusModal.style.display = "none";
 					});
 
 					/**
@@ -94,8 +305,6 @@ $(document)
 							.submit(
 									function(e) {
 										e.preventDefault();
-										console.log('form submitted');
-										console.log('clicked model submit ');
 										var sectionFormData = $(
 												"form#newSectionForm")
 												.serialize();
@@ -116,7 +325,7 @@ $(document)
 																	.html(
 																			'Use Underscore in place of Space');
 														} else {
-															alert('scetion added');
+															alert('section added');
 															console
 																	.log(response);
 															console
@@ -142,6 +351,7 @@ $(document)
 																	"form#newSectionForm")
 																	.trigger(
 																			"reset");
+															getSectionCategoryDocumentGraphData();
 															sectionModal.style.display = "none";
 														}
 													},
@@ -209,6 +419,7 @@ $(document)
 																	"form#newCategoryForm")
 																	.trigger(
 																			"reset");
+															getSectionCategoryDocumentGraphData();
 															categoryModal.style.display = "none";
 														}
 													},
@@ -229,41 +440,60 @@ $(document)
 							.submit(
 									function(e) {
 										e.preventDefault();
-										var documentFormData = new FormData(
-												$('#newDocumentForm')[0]);
-										$
-												.ajax({
-													type : "POST",
-													url : "./saveDocument.html",
-													data : documentFormData,
-													processData : false,
-													contentType : false,
-													success : function(response) {
-														if (response == 'FileNotPDF') {
-															$(
-																	'#newDocumentFormMessageId')
-																	.html(
-																			'Only pdf files are allowed to upload ');
-														} else {
-															$(
-																	'#totalDocumentId')
-																	.html(
-																			response);
-															location.reload();
-															$(
-																	"form#newDocumentForm")
-																	.trigger(
-																			"reset");
-															documentModal.style.display = "none";
+										console
+												.log($('#DocumentNameID').val().length);
+										if ($('#DocumentNameID').val().length > 30) {
+											$('#newDocumentFormMessageId')
+													.html(
+															'Document name should not exceeds 30 chracters');
+										} else {
+											var documentFormData = new FormData(
+													$('#newDocumentForm')[0]);
+											$
+													.ajax({
+														type : "POST",
+														url : "./saveDocument.html",
+														data : documentFormData,
+														processData : false,
+														contentType : false,
+														success : function(
+																response) {
+															if (response == 'FileNotPDF') {
+																$(
+																		'#newDocumentFormMessageId')
+																		.html(
+																				'Only pdf files are allowed to upload ');
+															}
+															if (response == 'alreadyExists') {
+																$(
+																		'#newDocumentFormMessageId')
+																		.html(
+																				'Document Exists With this name Under this batch');
+															} else {
+																$(
+																		'#totalDocumentId')
+																		.html(
+																				response);
+																getSectionCategoryDocumentGraphData();
+
+																location
+																		.reload();
+																$(
+																		"form#newDocumentForm")
+																		.trigger(
+																				"reset");
+																documentModal.style.display = "none";
+															}
+														},
+														error : function(
+																textStatus,
+																errorThrown) {
+															console
+																	.log(textStatus);
+															alert('Document Not created');
 														}
-													},
-													error : function(
-															textStatus,
-															errorThrown) {
-														console.log(textStatus);
-														alert('Document Not created');
-													}
-												});
+													});
+										}
 
 									});
 
@@ -295,7 +525,7 @@ $(document)
 							.change(
 									function(event) {
 										console.log('changed section ');
-										if (dataListOfCategories
+										while (dataListOfCategories
 												.hasChildNodes()) {
 											dataListOfCategories
 													.removeChild(dataListOfCategories.firstChild);
@@ -371,24 +601,134 @@ $(document)
 								}
 							});
 
-					$(document).on("change", "input[type=radio]", function() {
-						console.log('Radio button changed ');
-						var documentId = jQuery(this).attr("documentId");
-						var value = jQuery(this).val();
-						console.log(value, "  ", documentId);
+					$(document)
+							.on(
+									"change",
+									"input[type=radio]",
+									function() {
+										console.log('Radio button changed ');
+										var documentId = jQuery(this).attr(
+												"documentId");
+										var value = jQuery(this).val();
+										console.log(value, "  ", documentId);
+										console.log(documentShowStatusModal);
+										documentShowStatusModal.style.display = "block";
+										var selectBox = document
+												.getElementById('forSpecificMemberDocumentShowStatusSelectBoxId');
+										console.log(selectBox.value);
+										while (selectBox.hasChildNodes()) {
+											selectBox
+													.removeChild(selectBox.firstChild);
+										}
+										$
+												.ajax({
+													url : "./getListOfMembersByDocumentsBatchId.html",
+													data : {
+														documentId : documentId
+													},
+													success : function(response) {
+														console.log(response);
+														$(
+																'#documentShowStatusModalDocumentId')
+																.val(documentId);
+														$(
+																'#documentShowStatusModalStatusValue')
+																.val(value);
+														var selectOption = document
+																.createElement("option");
+														selectOption.text = "Select";
+														selectOption
+																.setAttribute(
+																		"selected",
+																		"selected");
+														selectOption
+																.setAttribute(
+																		"disabled",
+																		"disabled");
+														selectBox
+																.appendChild(selectOption);
+														response
+																.forEach(function(
+																		item) {
+																	var option = document
+																			.createElement('option');
+																	option.value = item.id;
+																	option.text = item.email;
+																	selectBox
+																			.appendChild(option);
+																});
+													}
+												});
+										/*
+										 * $.ajax({ url :
+										 * "./onStatusChangeOfShowHide.html",
+										 * data : { documentId : documentId,
+										 * status : value }, success :
+										 * function(data) { alert("status change
+										 * successfully "); }
+										 * 
+										 * });
+										 */
+									});
 
-						$.ajax({
-							url : "./onStatusChangeOfShowHide.html",
-							data : {
-								documentId : documentId,
-								status : value
-							},
-							success : function(data) {
-								alert("status change successfully ");
-							}
+					$('#forAllDocumentShowStatusButtonId')
+							.click(
+									function() {
+										var documentId = $(
+												'#documentShowStatusModalDocumentId')
+												.val();
+										var value = $(
+												'#documentShowStatusModalStatusValue')
+												.val();
 
-						});
-					});
+										$
+												.ajax({
+													url : "./onStatusChangeOfShowHide.html",
+													data : {
+														documentId : documentId,
+														status : value
+													},
+													success : function(data) {
+														alert("status change successfully ");
+														documentShowStatusModal.style.display = "none";
+
+													}
+
+												});
+
+									});
+					$('#forSpecificMemberDocumentShowStatusButtonId')
+							.click(
+									function() {
+										var documentId = $(
+												'#documentShowStatusModalDocumentId')
+												.val();
+										var value = $(
+												'#documentShowStatusModalStatusValue')
+												.val();
+										var memberId = $(
+												'#forSpecificMemberDocumentShowStatusSelectBoxId')
+												.val();
+
+										console.log(documentId, "  ", value,
+												"  ", memberId);
+										$
+												.ajax({
+													url : "./onStatusChangeOfShowHideForSpecificMember.html",
+													data : {
+														documentId : documentId,
+														status : value,
+														memberId : memberId
+													},
+													success : function(data) {
+														alert("status change successfully ");
+														documentShowStatusModal.style.display = "none";
+
+													}
+
+												});
+
+									});
 
 					/**
 					 * when click on edit button , documents details will
@@ -422,7 +762,8 @@ $(document)
 													}
 												});
 									});
-					$('#deleteDocumentButtonId').click(function() {
+					$('.deleteDoc').click(function() {
+						console.log('clicked');
 						var documentId = jQuery(this).attr("documentId");
 						console.log(documentId);
 						$.ajax({
@@ -438,151 +779,326 @@ $(document)
 						});
 					});
 
-					/**
-					 * button clicked , create new Document modal open
-					 */
-					$('#readStatusLinkId')
-							.click(
-									function() {
-										console
-												.log(' readStatusLinkId button clicked ');
-										CheckDocumentReadStatusModal.style.display = "block";
-										$(
-												'#checkDocumentReadStatusFormMessageId')
-												.html('');
-										$("form#checkDocumentReadStatusForm")
-												.trigger("reset");
-										$
-												.ajax({
-													url : "./getMembers.html",
-													success : function(response) {
-														console.log(response);
-														response
-																.forEach(function(
-																		item) {
-																	console
-																			.log(item);
-																	var option = document
-																			.createElement('option');
-																	option.value = item.firstname
-																			+ "_"
-																			+ item.lastname;
-																	option.id = item.firstname
-																			+ "_"
-																			+ item.lastname;
-																	option.memberId = item.id;
-																	option
-																			.setAttribute(
-																					'memberId',
-																					item.id);
-																	dataListOfMembers
-																			.appendChild(option);
-																});
-
-													}
-												});
-									});
-
-					$('#closeCheckDocumentReadStatusModalId')
-							.click(
-									function() {
-										$("form#checkDocumentReadStatusForm")
-												.trigger("reset");
-										$('#statusRead').html('');
-										$('#statusUnRead').html('');
-										$('#FirstSeen').html('');
-										$('#LastSeen').html('');
-										while (dataListOfMembers
-												.hasChildNodes()) {
-											dataListOfMembers
-													.removeChild(dataListOfMembers.firstChild);
+					$("form#newBatchForm").submit(
+							function(e) {
+								e.preventDefault();
+								var batchFormData = $("form#newBatchForm")
+										.serialize();
+								console.log(batchFormData);
+								$.ajax({
+									url : "./saveBatch.html",
+									data : batchFormData,
+									success : function(response) {
+										if (response == 'batchExists') {
+											$('#newBatchFormMessageId').html(
+													'Batch Already Exists');
+										} else {
+											alert('batch added');
+											getBatchMemberGraphData();
+											$('#totalBatchId')
+													.html(response[1]);
+											batchModal.style.display = "none";
 										}
-										CheckDocumentReadStatusModal.style.display = "none";
+									},
+									error : function(textStatus, errorThrown) {
+										console.log(textStatus);
+										alert('Batch Not created');
+									}
+								});
+
+							});
+					$('#batchSelectBoxIdForReadStatus')
+							.change(
+									function() {
+										var batchId = $(this).val();
+										var documentSelectBox = document
+												.getElementById('documentSelectBoxIdForReadStatus');
+										while (documentSelectBox
+												.hasChildNodes()) {
+											documentSelectBox
+													.removeChild(documentSelectBox.firstChild);
+										}
+										if (batchId != null) {
+											$
+													.ajax({
+														url : "./getDocumentsByBatchId.html",
+														type : "POST",
+														data : {
+															batchId : batchId
+														},
+														success : function(
+																response) {
+															console
+																	.log(response);
+															var selectOption = document
+																	.createElement("option");
+															selectOption
+																	.setAttribute(
+																			"selected",
+																			"selected");
+															selectOption
+																	.setAttribute(
+																			"disabled",
+																			"disabled");
+															documentSelectBox
+																	.appendChild(selectOption);
+															response
+																	.forEach(function(
+																			item) {
+																		var option = document
+																				.createElement('option');
+																		option.text = item.name;
+																		option.value = item.id;
+
+																		documentSelectBox
+																				.appendChild(option);
+																	});
+
+														},
+														error : function(
+																response) {
+
+														}
+													});
+										}
 									});
 
-					$("form#checkDocumentReadStatusForm")
+					$("form#shiftDocumentsPageBatchFormId")
 							.submit(
 									function(e) {
 										e.preventDefault();
-										var tempDocument = $(
-												"input#checkDocumentReadStatusFormDocumentsId")
-												.val();
-										var documentIdOfReadStatus = $(
-												'#' + tempDocument).attr(
-												'documentId');
-										if (documentIdOfReadStatus == undefined) {
-											$(
-													'#checkDocumentReadStatusFormMessageId')
-													.html(
-															'Document not present');
-										}
-										var tempMember = $(
-												"input#checkDocumentReadStatusFormMemberId")
-												.val();
-										var memberSelectedOptionId = '#'
-												+ tempMember;
-										var memberId = $('#' + tempMember)
-												.attr('memberid');
-										if (memberId == undefined) {
-											$(
-													'#checkDocumentReadStatusFormMessageId')
-													.html('Member not present');
-										}
+
+										console.log('submitted');
+										var formData = $(
+												"form#shiftDocumentsPageBatchFormId")
+												.serialize();
+										console.log(formData);
 
 										$
 												.ajax({
 													type : "POST",
-													url : "./checkDocumentStatus.html",
-													data : {
-														documentIdOfReadStatus : documentIdOfReadStatus,
-														memberId : memberId
-													},
+													url : "./shiftDocumentsByBatch.html",
+													data : formData,
 													success : function(response) {
-														if (response == 'UnRead') {
-															$('#statusRead')
-																	.html('');
-
-															$('#statusUnRead')
+														if (response == 'bothBatchSame') {
+															$(
+																	'#shiftDocumentsByBatchFormMessageId')
 																	.html(
-																			'UnRead');
-															$('#FirstSeen')
-																	.html('');
-															$('#LastSeen')
-																	.html('');
-
+																			'Please Select Different Batch');
 														} else {
+
 															console
 																	.log(response);
-															$('#statusUnRead')
-																	.html('');
-															$('#statusRead')
-																	.html(
-																			'Read');
-															$('#FirstSeen')
-																	.html(
-																			response[1]);
-															$('#LastSeen')
-																	.html(
-																			response[2]);
 
+															$(
+																	'#shiftDocumentsByBatchFormMessageId')
+																	.html();
+															alert('data Copied to new Batch');
+															// location.reload();
 														}
 													},
 													error : function(
 															textStatus,
 															errorThrown) {
 														console.log(textStatus);
-														alert('Not able to got read status');
+														alert('Document Not  Editted');
 													}
 												});
-										$("form#checkDocumentReadStatusForm")
+										$("form#shiftDocumentsPageBatchFormId")
+												.trigger("reset");
+
+									});
+
+					$('#shiftDocumentsPageByCategoryBatchSelectBoxId')
+							.change(
+									function(event) {
+										var batchId = $(this).val();
+
+										while (dataListOfDocuments
+												.hasChildNodes()) {
+											dataListOfDocuments
+													.removeChild(dataListOfDocuments.firstChild);
+										}
+										$
+												.ajax({
+													url : "./getDocumentsByBatchId.html",
+													data : {
+														batchId : batchId
+													},
+													success : function(response) {
+														console.log(response);
+														var selectOption = document
+																.createElement("option");
+														selectOption.text = "Select";
+														selectOption
+																.setAttribute(
+																		"selected",
+																		"selected");
+														selectOption
+																.setAttribute(
+																		"disabled",
+																		"disabled");
+														dataListOfDocuments
+																.appendChild(selectOption);
+														response
+																.forEach(function(
+																		item) {
+																	var option = document
+																			.createElement('option');
+
+																	option.value = item.name;
+																	option.id = item.name;
+																	option.documentId = item.id;
+																	option
+																			.setAttribute(
+																					'documentId',
+																					item.id);
+																	console
+																			.log(option);
+																	dataListOfDocuments
+																			.appendChild(option);
+																});
+													},
+													error : function(
+															textStatus,
+															errorThrown) {
+														console.log(textStatus);
+													}
+												});
+									});
+
+					$('#shiftDocumentsPageDocumentBoxId')
+							.change(
+									function() {
+										console.log('changed');
+										console.log($(this).val());
+										var fromCategorySelectBox = document
+												.getElementById('shiftDocumentsPageFromCategorySelectBoxId');
+										var toCategorySelectBox = document
+												.getElementById('shiftDocumentsPageToCategorySelectBoxId');
+
+										while (fromCategorySelectBox
+												.hasChildNodes()) {
+											fromCategorySelectBox
+													.removeChild(fromCategorySelectBox.firstChild);
+										}
+										while (toCategorySelectBox
+												.hasChildNodes()) {
+											toCategorySelectBox
+													.removeChild(toCategorySelectBox.firstChild);
+										}
+										var tempDoc = $(this).val();
+										var documentId = $('#' + tempDoc).attr(
+												'documentId');
+										$('#shiftDocumentsPageHiddenBoxId')
+												.val(documentId);
+										console.log(documentId);
+										$
+												.ajax({
+													url : "./getCategoryFromDocumentId.html",
+													data : {
+														documentId : documentId
+													},
+													success : function(response) {
+														console.log(response);
+														var option = document
+																.createElement("option");
+														option.text = response.name;
+														option.value = response.id;
+														option.setAttribute(
+																"selected",
+																"selected");
+														/*
+														 * option.setAttribute(
+														 * "disabled",
+														 * "disabled");
+														 */
+														fromCategorySelectBox
+																.appendChild(option);
+
+													}
+												});
+
+										$
+												.ajax({
+													url : "./getCategoriesUnderASectionByDocumentId.html",
+													data : {
+														documentId : documentId
+													},
+													success : function(response) {
+														console.log(response);
+														var selectOption = document
+																.createElement("option");
+														selectOption.text = "";
+														selectOption
+																.setAttribute(
+																		"selected",
+																		"selected");
+														selectOption
+																.setAttribute(
+																		"disabled",
+																		"disabled");
+														toCategorySelectBox
+																.appendChild(selectOption);
+														response
+																.forEach(function(
+																		item) {
+																	var option = document
+																			.createElement('option');
+																	option.text = item.name;
+																	option.value = item.id;
+																	console
+																			.log(option);
+																	toCategorySelectBox
+																			.appendChild(option);
+																});
+													}
+												});
+									});
+
+					$('form#shiftDocumentsPageCategoryFormId')
+							.submit(
+									function(e) {
+										e.preventDefault();
+										var formData = $(
+												"form#shiftDocumentsPageCategoryFormId")
+												.serialize();
+										console.log(formData);
+
+										$
+												.ajax({
+													url : "./shiftDocumentsByCategory.html",
+													data : formData,
+													success : function(response) {
+														console.log(response);
+														alert('document moved to new Category');
+														// location.reload();
+													},
+													error : function(
+															textStatus,
+															errorThrown) {
+														console.log(textStatus);
+														alert('Document Not  Moved');
+													}
+												});
+										$(
+												"form#shiftDocumentsPageCategoryFormId")
 												.trigger("reset");
 
 									});
 
 				});
 
-function filterText() {
-	var rex = new RegExp($('#filterText').val());
+function filterTextOfSectionColumn() {
+	var rex = new RegExp($('#filterTextOfSectionColumn').val());
+	var sectionId = $('#' + $('#filterTextOfSectionColumn').val()).attr(
+			'sectionId');
+	var selectListOfCategories = document
+			.getElementById("filterTextOfCategoryColumn");
+	console.log(rex + " - " + sectionId);
+	while (selectListOfCategories.hasChildNodes()) {
+		selectListOfCategories.removeChild(selectListOfCategories.firstChild);
+	}
 	if (rex == "/ALL/") {
 		clearFilter()
 	} else {
@@ -591,9 +1107,90 @@ function filterText() {
 			console.log($(this).text());
 			return rex.test($(this).text());
 		}).show();
+		$.ajax({
+			url : "./getCategories.html",
+			data : {
+				sectionId : sectionId
+			},
+			success : function(response) {
+				console.log(response);
+				var selectOption = document.createElement("option");
+				selectOption.text = "Select";
+				selectOption.setAttribute("selected", "selected");
+				selectOption.setAttribute("disabled", "disabled");
+				selectListOfCategories.appendChild(selectOption);
+				for (var i = 0; i < response.length; i++) {
+					var option = document.createElement("option");
+					option.value = response[i].name;
+					option.text = response[i].name;
+					selectListOfCategories.appendChild(option);
+				}
+				var allOption = document.createElement("option");
+				allOption.text = "ALL";
+				allOption.value = "ALL";
+				selectListOfCategories.appendChild(allOption);
+			}
+		});
+
 	}
 }
 
+function filterTextOfCategoryColumn() {
+	var rex = new RegExp($('#filterTextOfCategoryColumn').val());
+	if (rex == "/ALL/") {
+		clearFilter()
+	} else {
+		$('.contentOfDocuments').hide();
+		$('.contentOfDocuments').filter(function() {
+			console.log($(this).text());
+			return rex.test($(this).text());
+		}).show();
+
+	}
+}
+
+function filterTextOfCreatedDateColumn() {
+
+	var rex = new RegExp($('#filterTextOfCreatedDateColumn').val());
+	if (rex == "/ALL/") {
+		clearFilter()
+	} else {
+		$('.contentOfDocuments').hide();
+		$('.contentOfDocuments').filter(function() {
+			console.log($(this).text());
+			return rex.test($(this).text());
+		}).show();
+
+	}
+}
+
+function filterTextOfStatusColumn() {
+
+	var rex = new RegExp($('#filterTextOfStatusColumn').val());
+	if (rex == "/ALL/") {
+		clearFilter()
+	} else {
+		$('.contentOfDocuments').hide();
+		$('.contentOfDocuments').filter(function() {
+			return rex.test($(this).text());
+		}).show();
+
+	}
+}
+
+function filterTextOfBatchColumn() {
+
+	var rex = new RegExp($('#filterTextOfBatchColumn').val());
+	if (rex == "/ALL/") {
+		clearFilter()
+	} else {
+		$('.contentOfDocuments').hide();
+		$('.contentOfDocuments').filter(function() {
+			return rex.test($(this).text());
+		}).show();
+
+	}
+}
 function clearFilter() {
 	$('.filterText').val('');
 	$('.contentOfDocuments').show();

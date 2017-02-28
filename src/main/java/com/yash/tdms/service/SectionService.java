@@ -32,4 +32,7 @@ public interface SectionService {
 	int getTotalSections();
 
 	boolean checkIfSectionExists(String sectionName);
+
+	List getSectionCategoryDocumentGraphData(int batchId);
+
 }

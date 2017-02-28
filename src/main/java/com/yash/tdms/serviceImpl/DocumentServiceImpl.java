@@ -2,7 +2,11 @@ package com.yash.tdms.serviceImpl;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -10,9 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.JsonElement;
 import com.yash.tdms.dao.DocumentDao;
+import com.yash.tdms.model.Category;
 import com.yash.tdms.model.Document;
+import com.yash.tdms.service.CategoryService;
 import com.yash.tdms.service.DocumentService;
 
 /**
@@ -29,6 +34,9 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Autowired
 	private DocumentDao documentDao;
+
+	@Autowired
+	private CategoryService categoryService;
 
 	public void addDocument(Document document) {
 		documentDao.addDocument(document);
@@ -58,8 +66,8 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 	}
 
-	public List<Document> getAllActiveDocuments() {
-		return documentDao.getAllActiveDocuments();
+	public List<Document> getAllActiveDocuments(int batchId, int memberId) {
+		return documentDao.getAllActiveDocuments(batchId, memberId);
 	}
 
 	public int getTotalDocuments(int memberId) {
@@ -97,5 +105,101 @@ public class DocumentServiceImpl implements DocumentService {
 	public Map<String, Object> getDocumentReadStatus(int documentId,
 			int memberId) {
 		return documentDao.getDocumentReadStatus(documentId, memberId);
+	}
+
+	public List<Document> getAllDocumentsByBatchId(int batchId) {
+		return documentDao.getAllDocumentsByBatchId(batchId);
+	}
+
+	public List getDocumentReadStautsList(int batchId, int documentId) {
+		return documentDao.getDocumentReadStautsList(batchId, documentId);
+	}
+
+	@Override
+	public int getBatchIdByDocumentId(int documentId) {
+		return documentDao.getBatchIdByDocumentId(documentId);
+	}
+
+	@Override
+	public void changeStatusOfDocumentByDocumentIdForSpecificMember(
+			int documentId, int status, int memberId) {
+		documentDao.changeStatusOfDocumentByDocumentIdForSpecificMember(
+				documentId, status, memberId);
+	}
+
+	@Override
+	public void hideDocumentForSpecificMember() {
+		documentDao.hideDocumentForSpecificMember();
+	}
+
+	@Override
+	public void shiftDocumentsByBatch(int fromBatchId, int toBatchId) {
+		documentDao.shiftDocumentsByBatch(fromBatchId, toBatchId);
+	}
+
+	@Override
+	public void shiftDocumentsByCategory(int documentId, int fromCategoryId,
+			int toCategoryId, String workingDir) {
+		Category fromCategory = categoryService
+				.getCategoryByCategoryId(fromCategoryId);
+		Category toCategory = categoryService
+				.getCategoryByCategoryId(toCategoryId);
+		Document document = documentDao.getDocumentById(documentId);
+		document.setCategory_id(toCategoryId);
+		String oldFilePathString = document.getFilePath();
+		document.setFilePath(oldFilePathString.replace(oldFilePathString
+				.substring(oldFilePathString.indexOf("/"),
+						oldFilePathString.lastIndexOf("/")),
+				"/" + toCategory.getName()));
+		System.out.println(document);
+		documentDao.updateDocumentObject(document);
+
+		moveFile(oldFilePathString, document.getFilePath(), workingDir);
+
+	}
+
+	private void moveFile(String oldFilePath, String newFilePath,
+			String workingDir) {
+		InputStream inStream = null;
+		OutputStream outStream = null;
+
+		try {
+
+			File afile = new File(workingDir + File.separator + "Documents"
+					+ File.separator + oldFilePath);
+			File bfile = new File(workingDir + File.separator + "Documents"
+					+ File.separator + newFilePath);
+
+			inStream = new FileInputStream(afile);
+			outStream = new FileOutputStream(bfile);
+
+			byte[] buffer = new byte[1024];
+
+			int length;
+			// copy the file content in bytes
+			while ((length = inStream.read(buffer)) > 0) {
+
+				outStream.write(buffer, 0, length);
+
+			}
+
+			inStream.close();
+			outStream.close();
+
+			// delete the original file
+			afile.delete();
+
+			System.out.println("File is copied successful!");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public boolean documentNameExistsUnderThisBatch(int batchId, String documentName) {
+
+		return documentDao.documentNameExistsUnderThisBatch(batchId,documentName);
 	}
 }
