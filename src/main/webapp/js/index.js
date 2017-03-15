@@ -120,7 +120,7 @@ $(document)
 											},
 											password : {
 												required : "Please provide a password",
-												minlength : "Password contain at least 7 characters",
+												minlength : "Password contain at least 8 characters",
 												maxlength : "Password contain at most 16 characters",
 												regx : "Password must have alteast 1 letter, 1 digit , 1 special symbol"
 											},

@@ -60,3 +60,18 @@
 	border-radius: 10px;
 	background-color: #5bc0de
 }
+
+.shiftcard {
+	width: 400px;
+	height: 300px;
+	border-color: red;
+	border: 2px;
+	background-color: #D6DBDF;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px; opacity : 0.8;
+	border-radius: 5px 5px 15px 15px;
+	text-align: center;
+	box-shadow: 1px 1px 1px 1px #ABB2B9;
+	opacity: 0.8;
+}

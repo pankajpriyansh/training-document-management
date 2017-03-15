@@ -7,12 +7,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -244,7 +248,7 @@ public class DocumentDaoImpl implements DocumentDao {
 
 	@Override
 	public void changeStatusOfDocumentByDocumentIdForSpecificMember(
-			int documentId, int status, int memberId) {
+			int documentId, int memberId) {
 		jdbcTemplate
 				.update("INSERT INTO members_documents_junction_show_status(documentId,user_id,createddate,modifieddate) VALUES(?,?,?,?)",
 						new Object[] { documentId, memberId,
@@ -259,10 +263,12 @@ public class DocumentDaoImpl implements DocumentDao {
 	}
 
 	@Override
-	public void shiftDocumentsByBatch(int fromBatchId, int toBatchId) {
-		List<Document> documents = jdbcTemplate.query(
-				"select * from documents where batch_id=?",
-				new Object[] { fromBatchId }, new DocumentRowMapper());
+	public void shiftDocumentsByBatch(int fromBatchId, int toBatchId,
+			int memberId) {
+		List<Document> documents = jdbcTemplate
+				.query("select * from documents where batch_id=? and createdby = ?",
+						new Object[] { fromBatchId, memberId },
+						new DocumentRowMapper());
 		String insertSqlString = "INSERT INTO documents(user_id,category_id,NAME,description,createdby,modifiedby,createddate,modifieddate,filepath,batch_id) VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 		jdbcTemplate.batchUpdate(insertSqlString,
@@ -320,5 +326,239 @@ public class DocumentDaoImpl implements DocumentDao {
 			System.out.println(e.getMessage());
 		}
 		return false;
+	}
+
+	@Override
+	public void saveRequestForDocument(int fromUserId, int toUserId,
+			List<Integer> documentsId, String reason) {
+		jdbcTemplate
+				.update("INSERT INTO documents_request (from_user_id,to_user_id,createddate,modifieddate,reason) VALUES (?,?,?,?,?);",
+						new Object[] { fromUserId, toUserId,
+								new Timestamp(new Date().getTime()),
+								new Timestamp(new Date().getTime()), reason });
+
+		int documents_request_id = jdbcTemplate
+				.queryForObject(
+						"select id from documents_request where from_user_id=? and to_user_id=? and reason = ?",
+						new Object[] { fromUserId, toUserId, reason },
+						Integer.class);
+		String insertSqlString = "INSERT INTO requested_documents (documents_request_id,document_id,createdby,modifiedby,createddate,modifieddate) VALUES (?,?,?,?,?,?)";
+
+		jdbcTemplate.batchUpdate(insertSqlString,
+				new BatchPreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						documentsId.get(i);
+						ps.setInt(1, documents_request_id);
+						ps.setInt(2, documentsId.get(i));
+						ps.setInt(3, fromUserId);
+						ps.setInt(4, fromUserId);
+						ps.setDate(5, new java.sql.Date(new Date().getTime()));
+						ps.setDate(6, new java.sql.Date(new Date().getTime()));
+					}
+
+					@Override
+					public int getBatchSize() {
+						return documentsId.size();
+					}
+				});
+	}
+
+	private static final class DocumentRequestRowMapper implements
+			RowMapper<List> {
+
+		public List mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+			List list = new ArrayList();
+			// Map columns to document object
+			list.add(resultSet.getInt("id"));
+			list.add(resultSet.getInt("from_user_id"));
+			list.add(resultSet.getString("reason"));
+			list.add(resultSet.getString("rejected_reason"));
+			list.add(resultSet.getInt("isActive"));
+			list.add(resultSet.getDate("createddate"));
+			System.out.println(list);
+			return list;
+		}
+	}
+
+	@Override
+	public List getRequestedDocumentsData(int memberId) {
+		List listOfRequestedDocuments = new ArrayList();
+		try {
+			listOfRequestedDocuments = jdbcTemplate
+					.query("select id,from_user_id,reason,rejected_reason,isActive,createddate from documents_request where to_user_id=? and isActive=1",
+							new Object[] { memberId },
+							new DocumentRequestRowMapper());
+		} catch (DataAccessException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(listOfRequestedDocuments);
+
+		List list = new ArrayList();
+		for (Object i : listOfRequestedDocuments) {
+			List tempList = (List) i;
+			Map<String, Object> tempMap = new HashMap<String, Object>();
+			tempMap.put("reason", tempList.get(2));
+			tempMap.put("requestId", tempList.get(0));
+
+			List<Document> documentsList = jdbcTemplate
+					.query("select * from documents where id in (SELECT document_id from requested_documents where documents_request_id = ?)",
+							new Object[] { tempList.get(0) },
+							new DocumentRowMapper());
+			System.out.println(documentsList);
+			tempMap.put("documents", documentsList);
+
+			Map<String, Object> map2 = (Map<String, Object>) jdbcTemplate
+					.queryForMap(
+							"select mem.id as memberId,concat(mem.firstname,' ',mem.lastname) as name,mem.email as email,(select bat.name from batches bat where id=mem.batch_id) as batch from members mem where id =? ",
+							new Object[] { tempList.get(1) });
+			tempMap.put("name", map2.get("name"));
+			tempMap.put("email", map2.get("email"));
+			tempMap.put("batch", map2.get("batch"));
+			tempMap.put("memberId", map2.get("memberId"));
+			System.out.println(map2);
+			list.add(tempMap);
+
+		}
+		System.out.println("--------Finalk list -------------------- ");
+		System.out.println(list);
+
+		return list;
+	}
+
+	@Override
+	public void approveRequestForDocument(int requestId,
+			List<Integer> documentsId, int memberId) {
+		jdbcTemplate
+				.update("update documents_request set isActive=2,modifieddate=? where id=?",
+						new Object[] { new Timestamp(new Date().getTime()),
+								requestId });
+
+		String insertSqlString = "INSERT INTO members_documents_junction_show_status(documentId,user_id,createddate,modifieddate) VALUES(?,?,?,?)";
+
+		jdbcTemplate.batchUpdate(insertSqlString,
+				new BatchPreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						ps.setInt(1, documentsId.get(i));
+						ps.setInt(2, memberId);
+						ps.setTimestamp(3, new Timestamp(new Date().getTime()));
+						ps.setTimestamp(4, new Timestamp(new Date().getTime()));
+
+					}
+
+					@Override
+					public int getBatchSize() {
+						return documentsId.size();
+					}
+				});
+
+	}
+
+	@Override
+	public void saveReasonForRejectionOfRequest(int requestId, String reason) {
+		jdbcTemplate
+				.update("update documents_request set isActive=2,modifieddate=?,rejected_reason=? where id=?",
+						new Object[] { new Timestamp(new Date().getTime()),
+								reason, requestId });
+		System.out.println("UPDATED  ----------------------------------- "
+				+ requestId);
+	}
+
+	@Override
+	public List getRequestedDocumentReportsBasicData(int memberId) {
+		List listOfRequestedDocuments = new ArrayList();
+		try {
+			listOfRequestedDocuments = jdbcTemplate
+					.query("select id,from_user_id,reason,rejected_reason,isActive,createddate from documents_request where to_user_id=?",
+							new Object[] { memberId },
+							new DocumentRequestRowMapper());
+		} catch (DataAccessException e1) {
+			e1.printStackTrace();
+		}
+		List list = new ArrayList();
+		for (Object i : listOfRequestedDocuments) {
+			List tempList = (List) i;
+			Map<String, Object> tempMap = new HashMap<String, Object>();
+			tempMap.put("reason", tempList.get(2));
+			tempMap.put("requestId", tempList.get(0));
+			tempMap.put("toMemberId", memberId);
+			Map<String, Object> map2 = (Map<String, Object>) jdbcTemplate
+					.queryForMap(
+							"select mem.id as memberId,concat(mem.firstname,' ',mem.lastname) as name,mem.email as email,(select bat.name from batches bat where id=mem.batch_id) as batch from members mem where id =? ",
+							new Object[] { tempList.get(1) });
+			tempMap.put("name", map2.get("name"));
+			tempMap.put("email", map2.get("email"));
+			tempMap.put("batch", map2.get("batch"));
+			tempMap.put("fromMemberId", map2.get("memberId"));
+			System.out.println(map2);
+			list.add(tempMap);
+		}
+
+		Map<Integer, Map<String, Object>> temporaryMap = new LinkedHashMap<Integer, Map<String, Object>>();
+		for (Object o : list) {
+			Map<String, Object> map = (Map<String, Object>) o;
+			temporaryMap.put((Integer) map.get("fromMemberId"), map);
+		}
+		list.clear();
+		list.addAll(temporaryMap.values());
+		return list;
+	}
+
+	@Override
+	public List getRequestedDocumentReportsAdvanceData(int fromMemberId,
+			int toMemberId) {
+
+		List listOfRequestedDocuments = new ArrayList();
+		try {
+			listOfRequestedDocuments = jdbcTemplate
+					.query("select id,from_user_id,reason,rejected_reason,isActive,createddate from documents_request where to_user_id=? and from_user_id=?",
+							new Object[] { toMemberId, fromMemberId },
+							new DocumentRequestRowMapper());
+		} catch (DataAccessException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(listOfRequestedDocuments);
+
+		List list = new ArrayList();
+		Map<String, Object> tempMap = new HashMap<String, Object>();
+		List<Document> totalDocuments = new ArrayList<Document>();
+		for (Object i : listOfRequestedDocuments) {
+			List tempList = (List) i;
+			List<Document> documentsList = jdbcTemplate
+					.query("select * from documents where id in (SELECT document_id from requested_documents where documents_request_id = ?)",
+							new Object[] { tempList.get(0) },
+							new DocumentRowMapper());
+			Map<String, Object> tempMapOfDocumentNameAndStatus = new HashMap<String, Object>();
+
+			documentsList.forEach((doc) -> {
+				String status = " NotApproved ";
+				if (((Integer) tempList.get(4)) == 1) {
+					status = " No Action Performed ";
+				} else {
+					if ((((Integer) tempList.get(4)) == 2)
+							&& tempList.get(3) == null) {
+						status = " Approved ";
+					} else {
+						status += " , " + tempList.get(3);
+					}
+				}
+				tempMapOfDocumentNameAndStatus.put(doc.getName(), status + "/"
+						+ tempList.get(5));
+			});
+			tempMap.putAll(tempMapOfDocumentNameAndStatus);
+		}
+		tempMap.forEach((k, v) -> {
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("documentName", k);
+			String value = (String) v;
+			m.put("status", value.split("/")[0]);
+			m.put("Date", value.split("/")[1]);
+
+			list.add(m);
+		});
+		return list;
 	}
 }

@@ -57,4 +57,11 @@ public class AdminController {
 		memberService.changeRole(memberId, role);
 	}
 
+	@RequestMapping("/shiftDocumentsAccordingToTrainer")
+	public String shiftDocumentsAccordingToTrainer(HttpSession session,
+			ModelMap modelMap) {
+		modelMap.addAttribute("trainers", memberService.getAllTrainers());
+		return "shiftDocumentsAccordingToTrainerPage";
+	}
+
 }

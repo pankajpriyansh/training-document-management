@@ -16,6 +16,9 @@ $(document)
 										json = json + "{";
 										json = json + "\"totalMembers\" : \" "
 												+ item[0] + " \",";
+										json = json
+												+ "\"totalDocuments\" : \" "
+												+ item[2] + " \",";
 										json = json + "\"batchName\" : \" "
 												+ item[1] + " \" ";
 										json = json + "},";
@@ -1086,6 +1089,140 @@ $(document)
 												.trigger("reset");
 
 									});
+
+					$(".approvedButton").click(function() {
+						var requestId = jQuery(this).attr("requestId");
+						var documents = jQuery(this).attr("documents");
+						var memberId = jQuery(this).attr("memberId");
+
+						console.log(requestId);
+						console.log(documents);
+						console.log(memberId);
+						$.ajax({
+							type : "POST",
+							url : "./approveRequestForDocument.html",
+							data : {
+								requestId : requestId,
+								documents : documents,
+								memberId : memberId
+							},
+							success : function(response) {
+								alert('request Approved Successfully');
+								location.reload();
+							},
+							error : function(textStatus, errorThrown) {
+								console.log(textStatus);
+								alert('request Not Approved ');
+							}
+						});
+					});
+
+					var rejectReasonModal = document
+							.getElementById('RejectReasonModal');
+					$(".rejectButton").click(function() {
+						rejectReasonModal.style.display = "block";
+						var requestId = jQuery(this).attr("requestId");
+						$('#hiddenRequestId').val(requestId);
+					});
+
+					$('#closeRejectReasonModal').click(function() {
+						rejectReasonModal.style.display = "none";
+					});
+
+					$('form#rejectReasonForm').submit(function(e) {
+						e.preventDefault();
+						var requestId = $('#hiddenRequestId').val();
+						var reason = $('#reasonTextAreaId').val();
+						console.log('clicked  ', requestId, reason);
+						$.ajax({
+							type : "POST",
+							url : "./saveReasonForRejectionOfRequest.html",
+							data : {
+								requestId : requestId,
+								reason : reason
+							},
+							success : function(response) {
+								alert('Reason saved');
+								location.reload();
+							},
+							error : function(textStatus, errorThrown) {
+								console.log(textStatus);
+								alert('Reason not saved');
+							}
+						});
+					});
+
+					var documentApprovedStatusModal = document
+							.getElementById('documentApprovedStatusModal');
+
+					$('.showStatusButtonOfRequestedDocumentReports')
+							.click(
+									function() {
+										var toMemberId = jQuery(this).attr(
+												"toMemberId");
+										var fromMemberId = jQuery(this).attr(
+												"fromMemberId");
+										documentApprovedStatusModal.style.display = "block";
+										console.log(toMemberId, "   ",
+												fromMemberId);
+										var documentApprovedStatusTable = document
+												.getElementById('documentApprovedStatusTableId');
+										$
+												.ajax({
+													type : "POST",
+													url : "./getRequestedDocumentReportsAdvanceData.html",
+													data : {
+														fromMemberId : fromMemberId,
+														toMemberId : toMemberId
+													},
+													success : function(response) {
+														console.log(response);
+														for (var i = 1; i < documentApprovedStatusTable.rows.length;) {
+															documentApprovedStatusTable
+																	.deleteRow(i);
+														}
+														response
+																.forEach(function(
+																		item) {
+																	var row = documentApprovedStatusTable
+																			.insertRow();
+																	row.style.border = "1px solid";
+																	var cell1 = row
+																			.insertCell(0);
+																	cell1.style.border = "1px solid";
+																	cell1.style.padding = "5px";
+																	var cell2 = row
+																			.insertCell(1);
+																	cell2.style.border = "1px solid";
+																	cell2.style.padding = "5px";
+																	cell2.style.color = "red";
+																	var cell3 = row
+																			.insertCell(2);
+																	cell3.style.border = "1px solid";
+																	cell3.style.padding = "5px";
+
+																	cell1.innerHTML = item.documentName;
+																	console
+																			.log(item.status);
+																	if (item.status == " No Action Performed ")
+																		cell2.style.color = "orange";
+																	if (item.status == ' Approved ')
+																		cell2.style.color = "green";
+																	cell2.innerHTML = item.status;
+																	cell3.innerHTML = item.Date;
+																});
+													},
+													error : function(
+															textStatus,
+															errorThrown) {
+														console.log(textStatus);
+													}
+												});
+
+									});
+					$('#closeDocumentApprovedStatusModal').click(function() {
+						documentApprovedStatusModal.style.display = "none";
+					});
 
 				});
 

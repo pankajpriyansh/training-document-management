@@ -40,5 +40,7 @@ public interface MemberService {
 
 	List getBatchMemberGraphData();
 
+	void changePassword(String email, String newPassword);
+
 
 }

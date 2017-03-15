@@ -2,6 +2,10 @@
 	text-align: center;
 }
 
+.amcharts-chart-div a {
+	display: none !important;
+}
+
 .form-control {
 	position: relative;
 	font-size: 16px;

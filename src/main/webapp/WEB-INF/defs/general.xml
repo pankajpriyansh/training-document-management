@@ -50,6 +50,23 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/trainer/showDocuments.jsp" />
 	</definition>
+
+	<definition name="documentsRequestPage" extends="trainer">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/trainer/trainerSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/trainer/documentsRequestPage.jsp" />
+	</definition>
+
+	<definition name="documentRequestReportsPage" extends="trainer">
+		<put-attribute name="title" value="Trainer Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/trainer/trainerSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/trainer/documentRequestReportsPage.jsp" />
+	</definition>
+
 	<!-- Trainer Related Mapping Ends -->
 
 
@@ -77,6 +94,15 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/admin/registrationRequestPage.jsp" />
 	</definition>
+	<definition name="shiftDocumentsAccordingToTrainerPage"
+		extends="common">
+		<put-attribute name="title" value="Admin Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/shiftDocumentsPage.jsp" />
+	</definition>
+
 
 	<!-- Admin Related Mapping ends -->
 

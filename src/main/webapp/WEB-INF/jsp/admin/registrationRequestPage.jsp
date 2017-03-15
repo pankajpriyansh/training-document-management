@@ -1,9 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="css/jquery.dataTables.min.css" />
+	
 <link rel="stylesheet" type="text/css" href="css/admin-body-style.css" />
 <script src="js/admin.js"></script>
 <script>

@@ -395,7 +395,7 @@ public class TrainerController {
 		 * , this entry will be automatically deleted
 		 */
 		documentService.changeStatusOfDocumentByDocumentIdForSpecificMember(
-				Integer.parseInt(documentId), 1, memberId);
+				Integer.parseInt(documentId), memberId);
 
 		response.getWriter().append("completed");
 	}
@@ -426,13 +426,14 @@ public class TrainerController {
 	@RequestMapping(value = "/shiftDocumentsByBatch")
 	public void shiftDocumentsByBatch(
 			@RequestParam("fromBatchId") int fromBatchId,
-			@RequestParam("toBatchId") int toBatchId,
+			@RequestParam("toBatchId") int toBatchId, HttpSession session,
 			HttpServletResponse response) throws IOException {
 		if (fromBatchId == toBatchId) {
 			response.getWriter().append("bothBatchSame");
 			return;
 		}
-		documentService.shiftDocumentsByBatch(fromBatchId, toBatchId);
+		documentService.shiftDocumentsByBatch(fromBatchId, toBatchId,
+				((Member) session.getAttribute("loggedInUser")).getId());
 		response.getWriter().append("");
 	}
 
@@ -476,11 +477,73 @@ public class TrainerController {
 	public void getBatchMemberGraphData(HttpServletResponse response)
 			throws IOException {
 		List list = memberService.getBatchMemberGraphData();
-		System.out.println(list);
 		String jsonData = new Gson().toJson(list);
 		response.setContentType("application/json");
 		response.getWriter().append(jsonData);
 
+	}
+
+	@RequestMapping(value = "/documentsRequest")
+	public String documentsRequest(HttpSession session, ModelMap modelMap)
+			throws IOException {
+		modelMap.addAttribute("requestedDocuments", documentService
+				.getRequestedDocumentsData(((Member) session
+						.getAttribute("loggedInUser")).getId()));
+		return "documentsRequestPage";
+	}
+
+	@RequestMapping(value = "/approveRequestForDocument")
+	public void approveRequestForDocument(
+			@RequestParam("requestId") int requestId,
+			@RequestParam("documents") String documents,
+			@RequestParam("memberId") int memberId,
+			HttpServletResponse response, ModelMap modelMap) throws IOException {
+		List<Integer> documentsId = new ArrayList<Integer>();
+		for (String s : documents.substring(1).split(",")) {
+			documentsId.add(Integer.parseInt(s));
+		}
+		documentService.approveRequestForDocument(requestId, documentsId,
+				memberId);
+		response.getWriter().append("");
+	}
+
+	@RequestMapping(value = "/saveReasonForRejectionOfRequest")
+	public void saveReasonForRejectionOfRequest(
+			@RequestParam("requestId") int requestId,
+			@RequestParam("reason") String reason,
+			HttpServletResponse response, ModelMap modelMap) throws IOException {
+		System.out.println(requestId + "       " + reason);
+		documentService.saveReasonForRejectionOfRequest(requestId, reason);
+		response.getWriter().append("");
+	}
+
+	@RequestMapping(value = "/documentRequestReports")
+	public String documentRequestReports(HttpSession session, ModelMap modelMap)
+			throws IOException {
+		/*
+		 * System.out.println(documentService
+		 * .getRequestedDocumentReportsData(((Member) session
+		 * .getAttribute("loggedInUser")).getId()));
+		 */
+
+		modelMap.addAttribute("requestedDocumentReports", documentService
+				.getRequestedDocumentReportsBasicData(((Member) session
+						.getAttribute("loggedInUser")).getId()));
+
+		return "documentRequestReportsPage";
+	}
+
+	@RequestMapping(value = "/getRequestedDocumentReportsAdvanceData")
+	public void getRequestedDocumentReportsAdvanceData(
+			@RequestParam("fromMemberId") int fromMemberId,
+			@RequestParam("toMemberId") int toMemberId,
+			HttpServletResponse response, ModelMap modelMap) throws IOException {
+		System.out.println(fromMemberId + "       " + toMemberId);
+		List list = documentService.getRequestedDocumentReportsAdvanceData(
+				fromMemberId, toMemberId);
+		String jsonData = new Gson().toJson(list);
+		response.setContentType("application/json");
+		response.getWriter().append(jsonData);
 	}
 
 }

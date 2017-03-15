@@ -21,12 +21,10 @@ $(document)
 						e.preventDefault();
 					});
 
-			/*		$(window).focus(function() {
-						$("body").show();
-					}).blur(function() {
-						$("body").hide();
-					});
-*/
+					/*
+					 * $(window).focus(function() { $("body").show();
+					 * }).blur(function() { $("body").hide(); });
+					 */
 					jQuery('.DocumentBox')
 							.click(
 									function() {
@@ -183,7 +181,7 @@ $(document)
 																		item) {
 																	var option = document
 																			.createElement('option');
-																	option.value = item.email;
+																	option.value = item.id;
 																	option.text = item.email;
 																	selectBox
 																			.appendChild(option);
@@ -237,7 +235,7 @@ $(document)
 																		item) {
 																	var option = document
 																			.createElement('option');
-																	option.value = item.name;
+																	option.value = item.id;
 																	option.text = item.name;
 																	selectBoxForDocument
 																			.appendChild(option);
@@ -283,15 +281,24 @@ $(document)
 										var raiseRequestFormData = $(
 												"form#raiseRequestForm")
 												.serialize();
+										var documents = $('#documentsSelectBox')
+												.val();
+										console.log(documents[0]);
+										console.log(documents[1]);
+										var trainerId = $(
+												'#trainersEmailSelectBox')
+												.val();
+										var reason = $('#reasonOfRequest')
+												.val();
 										console.log("data====",
 												raiseRequestFormData);
 										$
 												.ajax({
-													url : "./MailController.html",
+													url : "./requestController.html",
 													data : raiseRequestFormData,
 													success : function(response) {
 														raiseRequestModal.style.display = "none";
-														alert('Request Sent Successfully');
+														alert('Request Sent Successfully. After Approval from the trainer, the documents will be available for 2 days');
 
 													},
 													error : function(

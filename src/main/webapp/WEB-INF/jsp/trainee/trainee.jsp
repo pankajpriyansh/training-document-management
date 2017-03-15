@@ -6,8 +6,8 @@
 <link rel="icon" href="images/logo.png" />
 <link rel="stylesheet" type="text/css" href="css/trainee-body-style.css" />
 <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+
 <!-- <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -17,10 +17,9 @@
 <script src="js/pdf.worker.js"></script>
 <script src="js/trainee.js"></script>
 
-<link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.11.2/themes/redmond/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.11.2.js"></script>
-<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css">
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
 
 <!--Description and Sidebar START -->
 <div class="container-fluid grey description-sidebar-container">
@@ -144,7 +143,7 @@
 								required>
 									<option disabled selected></option>
 									<c:forEach items="${trainers}" var="trainer">
-										<option value="${trainer.email}">${trainer.email}</option>
+										<option value="${trainer.id}">${trainer.email}</option>
 									</c:forEach>
 							</select></td>
 						</tr>
@@ -156,7 +155,7 @@
 						<tr>
 							<td>Reason</td>
 							<td><input type="text" class="form-control" name="subject"
-								id="subject" required></td>
+								id="reasonOfRequest" required></td>
 						</tr>
 						<tr>
 							<td>Select Document</td>
@@ -164,7 +163,7 @@
 								multiple="multiple" required>
 									<option disabled selected></option>
 									<c:forEach items="${documents}" var="document">
-										<option value="${document.name}">${document.name}</option>
+										<option value="${document.id}">${document.name}</option>
 									</c:forEach>
 							</select></td>
 						</tr>

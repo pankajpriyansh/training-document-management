@@ -122,9 +122,9 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	public void changeStatusOfDocumentByDocumentIdForSpecificMember(
-			int documentId, int status, int memberId) {
+			int documentId, int memberId) {
 		documentDao.changeStatusOfDocumentByDocumentIdForSpecificMember(
-				documentId, status, memberId);
+				documentId, memberId);
 	}
 
 	@Override
@@ -133,8 +133,9 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public void shiftDocumentsByBatch(int fromBatchId, int toBatchId) {
-		documentDao.shiftDocumentsByBatch(fromBatchId, toBatchId);
+	public void shiftDocumentsByBatch(int fromBatchId, int toBatchId,
+			int memberId) {
+		documentDao.shiftDocumentsByBatch(fromBatchId, toBatchId, memberId);
 	}
 
 	@Override
@@ -198,8 +199,45 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public boolean documentNameExistsUnderThisBatch(int batchId, String documentName) {
+	public boolean documentNameExistsUnderThisBatch(int batchId,
+			String documentName) {
 
-		return documentDao.documentNameExistsUnderThisBatch(batchId,documentName);
+		return documentDao.documentNameExistsUnderThisBatch(batchId,
+				documentName);
+	}
+
+	@Override
+	public void saveRequestForDocument(int fromUserId, int toUserId,
+			List<Integer> documentsId, String reason) {
+		documentDao.saveRequestForDocument(fromUserId, toUserId, documentsId,
+				reason);
+	}
+
+	@Override
+	public List getRequestedDocumentsData(int memberId) {
+		return documentDao.getRequestedDocumentsData(memberId);
+	}
+
+	@Override
+	public void approveRequestForDocument(int requestId,
+			List<Integer> documentsId, int memberId) {
+		documentDao.approveRequestForDocument(requestId, documentsId, memberId);
+	}
+
+	@Override
+	public void saveReasonForRejectionOfRequest(int requestId, String reason) {
+		documentDao.saveReasonForRejectionOfRequest(requestId, reason);
+	}
+
+	@Override
+	public List getRequestedDocumentReportsBasicData(int memberId) {
+		return documentDao.getRequestedDocumentReportsBasicData(memberId);
+	}
+
+	@Override
+	public List getRequestedDocumentReportsAdvanceData(int fromMemberId,
+			int toMemberId) {
+		return documentDao.getRequestedDocumentReportsAdvanceData(fromMemberId,
+				toMemberId);
 	}
 }

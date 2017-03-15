@@ -173,7 +173,7 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public List getBatchMemberGraphData() {
 		return jdbcTemplate
-				.query("SELECT bat.name AS batchName,(SELECT COUNT(*) FROM members mem WHERE mem.`batch_id`=bat.id GROUP BY mem.`batch_id`) AS totalMembers FROM batches bat;",
+				.query("SELECT bat.name AS batchName,(SELECT COUNT(*) FROM members mem WHERE mem.`batch_id`=bat.id GROUP BY mem.`batch_id`) AS totalMembers, (SELECT COUNT(*) FROM documents doc WHERE doc.`batch_id`=bat.id GROUP BY doc.`batch_id` ) AS totalDocuments FROM batches bat;",
 						new BatchAndTotalMemberRowMapper());
 	}
 
@@ -184,8 +184,16 @@ public class MemberDaoImpl implements MemberDao {
 			List list = new ArrayList();
 			list.add(resultSet.getInt("totalMembers"));
 			list.add(resultSet.getString("batchName"));
+			list.add(resultSet.getString("totalDocuments"));
+
 			return list;
 		}
+	}
+
+	@Override
+	public void changePassword(String email, String newPassword) {
+		jdbcTemplate.update("update members set password = ? where email = ?",
+				newPassword, email);
 	}
 
 }

@@ -1,25 +1,33 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<!-- <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="js/jquery-3.1.1.min.js"></script>
+
+<!-- 
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script> -->
+
+<script src="js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+	href="css/jquery.dataTables.min.css" />
 <link rel="stylesheet" type="text/css" href="css/trainer-body-style.css" />
 <script src="js/trainer.js"></script>
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+
+<!-- <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <script
 	src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
 <link rel="stylesheet"
 	href="https://www.amcharts.com/lib/3/plugins/export/export.css"
 	type="text/css" media="all" />
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script> -->
+
+<script src="js/amcharts/amcharts.js"></script>
+<script src="js/amcharts/serial.js"></script>
+<script src="js/amcharts/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="css/export.css" type="text/css" media="all" />
+<script src="js/amcharts/themes/light.js"></script>
+
 <script>
 	$(document).ready(function() {
 		jQuery.noConflict();

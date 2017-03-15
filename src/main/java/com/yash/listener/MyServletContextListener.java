@@ -43,6 +43,12 @@ public class MyServletContextListener implements ServletContextListener {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() { // Function runs every MINUTES minutes.
+				System.out
+						.println("----------------------------------------------------------------------------------------------------------");
+				System.out
+						.println("-----------Listener Running---------------");
+				System.out
+						.println("----------------------------------------------------------------------------------------------------------");
 				documentService.hideDocumentForSpecificMember();
 			}
 		}, 0, 1000 * 60 * MINUTES);

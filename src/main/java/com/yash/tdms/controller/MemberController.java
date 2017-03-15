@@ -1,6 +1,8 @@
 package com.yash.tdms.controller;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -73,5 +75,19 @@ public class MemberController {
 		return "failedAuthentication";
 	}
 
-
+	@RequestMapping("/changePassword")
+	public void changePassword(@RequestParam("oldPassword") String oldPassword,
+			@RequestParam("newPassword") String newPassword,
+			HttpSession session, HttpServletResponse response)
+			throws IOException {
+		if (memberService.checkForAuthentication(
+				((Member) session.getAttribute("loggedInUser")).getEmail(),
+				oldPassword)) {
+			memberService.changePassword(
+					((Member) session.getAttribute("loggedInUser")).getEmail(),
+					newPassword);
+		} else {
+			response.getWriter().append("errorOfAuthentication");
+		}
+	}
 }

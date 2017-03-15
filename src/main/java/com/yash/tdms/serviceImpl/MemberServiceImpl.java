@@ -61,4 +61,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.getBatchMemberGraphData();
 	}
 
+	@Override
+	public void changePassword(String email, String newPassword) {
+		memberDao.changePassword(email, newPassword);
+	}
+
 }

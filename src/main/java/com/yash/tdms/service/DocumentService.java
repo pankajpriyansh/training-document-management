@@ -52,15 +52,29 @@ public interface DocumentService {
 	int getBatchIdByDocumentId(int documentId);
 
 	void changeStatusOfDocumentByDocumentIdForSpecificMember(int documentId,
-			int status, int memberId);
+			int memberId);
 
 	void hideDocumentForSpecificMember();
 
-	void shiftDocumentsByBatch(int fromBatchId, int toBatchId);
+	void shiftDocumentsByBatch(int fromBatchId, int toBatchId, int memberId);
 
 	void shiftDocumentsByCategory(int documentId, int fromCategoryId,
 			int toCategory, String workingDir);
 
 	boolean documentNameExistsUnderThisBatch(int batchId, String documentName);
+
+	void saveRequestForDocument(int fromUserId, int toUserId,
+			List<Integer> documentsId, String reason);
+
+	List getRequestedDocumentsData(int memberId);
+
+	void approveRequestForDocument(int requestId, List<Integer> documentsId,
+			int memberId);
+
+	void saveReasonForRejectionOfRequest(int requestId, String reason);
+
+	List getRequestedDocumentReportsBasicData(int memberId);
+
+	List getRequestedDocumentReportsAdvanceData(int fromMemberId, int toMemberId);
 
 }

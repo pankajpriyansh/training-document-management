@@ -64,4 +64,6 @@ public interface MemberDao {
 
 	public List getBatchMemberGraphData();
 
+	public void changePassword(String email, String newPassword);
+
 }
