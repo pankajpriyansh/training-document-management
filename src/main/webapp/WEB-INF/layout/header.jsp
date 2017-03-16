@@ -1,8 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<!-- <script src="js/jquery.validate.min.js"></script>
- -->
-
 
 <script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/header.js"></script>
@@ -10,16 +7,6 @@
 <link rel="icon" href="images/logo.png" />
 <link rel="stylesheet" type="text/css" href="css/reset-style.css" />
 <link rel="stylesheet" type="text/css" href="css/header-style.css" />
-
-<!-- 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-	-->
 
 <!-- Header START -->
 
@@ -34,12 +21,6 @@
 			<h3 id="h3">Welcome ${loggedInUser.firstname}
 				${loggedInUser.lastname}</h3>
 		</div>
-
-
-
-
-
-
 		<div class="col-md-3 text-right logout dropdown">
 			<button class="btn log-btn dropdown-toggle" type="button"
 				data-toggle="dropdown">

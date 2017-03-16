@@ -2,7 +2,6 @@ package com.yash.tdms.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -151,11 +150,13 @@ public class TraineeController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/GetDocumentList")
-	public void getListOfDocumentsByBatchId(HttpServletResponse response,
-			HttpSession session) throws IOException {
+	public void getListOfDocumentsByBatchId(
+			@RequestParam("trainerId") int trainerId,
+			HttpServletResponse response, HttpSession session)
+			throws IOException {
 		List<Document> listOfDocument = documentService
-				.getAllDocumentsByBatchId(((Member) session
-						.getAttribute("loggedInUser")).getBatchId());
+				.getAllDocumentsByBatchIdAndMemberId(((Member) session
+						.getAttribute("loggedInUser")).getBatchId(), trainerId);
 		String jsonOfDocument = new Gson().toJson(listOfDocument);
 		response.setContentType("application/json");
 		response.getWriter().append(jsonOfDocument);

@@ -21,10 +21,6 @@ $(document)
 						e.preventDefault();
 					});
 
-					/*
-					 * $(window).focus(function() { $("body").show();
-					 * }).blur(function() { $("body").hide(); });
-					 */
 					jQuery('.DocumentBox')
 							.click(
 									function() {
@@ -153,6 +149,11 @@ $(document)
 										var selectBox = document
 												.getElementById('trainersEmailSelectBox');
 										console.log(selectBox.value);
+										raiseRequestModal.style.display = "block";
+										$('#raiseRequestFormMessageId')
+												.html('');
+										$("form#raiseRequestForm").trigger(
+												"reset");
 										while (selectBox.hasChildNodes()) {
 											selectBox
 													.removeChild(selectBox.firstChild);
@@ -196,6 +197,14 @@ $(document)
 													}
 												});
 
+									});
+
+					$('#trainersEmailSelectBox')
+							.change(
+									function() {
+										var trainerId = $(
+												'#trainersEmailSelectBox')
+												.val();
 										var selectBoxForDocument = document
 												.getElementById('documentsSelectBox');
 										while (selectBoxForDocument
@@ -206,8 +215,11 @@ $(document)
 										console.log('button clicked ');
 										$
 												.ajax({
+													type : "POST",
 													url : "./GetDocumentList.html",
-
+													data : {
+														trainerId : trainerId
+													},
 													success : function(response) {
 														var documents = response;
 														console
