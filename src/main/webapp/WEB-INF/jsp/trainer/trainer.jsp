@@ -11,7 +11,7 @@
 <script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/jquery.validate.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/trainer-body-style.css" />
-<script src="js/trainer.js"></script>
+<script src="js/trainer/trainer.js"></script>
 
 <script src="js/amcharts/amcharts.js"></script>
 <script src="js/amcharts/serial.js"></script>

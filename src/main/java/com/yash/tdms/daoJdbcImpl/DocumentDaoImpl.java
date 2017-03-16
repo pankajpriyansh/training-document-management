@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -22,6 +23,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.sun.mail.handlers.image_gif;
 import com.yash.tdms.dao.DocumentDao;
 import com.yash.tdms.model.Document;
 import com.yash.tdms.model.Member;
@@ -560,5 +562,58 @@ public class DocumentDaoImpl implements DocumentDao {
 			list.add(m);
 		});
 		return list;
+	}
+
+	@Override
+	public void shiftDocumentsByTrainer(int fromTrainerId, int toTrainerId,
+			List<Integer> documentsId) {
+
+		List<Document> tempDocuments = jdbcTemplate.query(
+				"select * from documents where createdby = ?",
+				new Object[] { fromTrainerId }, new DocumentRowMapper());
+		List<Document> documents = tempDocuments.stream()
+				.filter((i) -> documentsId.contains(i.getId()))
+				.collect(Collectors.toList());
+		System.out.println(documents);
+
+		String insertSqlString = "INSERT INTO documents(user_id,category_id,NAME,description,createdby,modifiedby,createddate,modifieddate,filepath,batch_id) VALUES (?,?,?,?,?,?,?,?,?,?);";
+
+		jdbcTemplate.batchUpdate(insertSqlString,
+				new BatchPreparedStatementSetter() {
+
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						Document document = documents.get(i);
+						ps.setInt(1, toTrainerId);
+						ps.setInt(2, document.getCategory_id());
+						ps.setString(3, document.getName());
+						ps.setString(4, document.getDescription());
+						ps.setInt(5, toTrainerId);
+						ps.setInt(6, toTrainerId);
+						ps.setDate(7, new java.sql.Date(document
+								.getCreatedDate().getTime()));
+						ps.setDate(8, new java.sql.Date(document
+								.getModifiedDate().getTime()));
+						ps.setString(9, document.getFilePath());
+						ps.setInt(10, document.getBatchId());
+					}
+
+					@Override
+					public int getBatchSize() {
+						return documents.size();
+					}
+
+				});
+
+	}
+
+	@Override
+	public List<Document> getAllDocumentsByBatchIdAndMemberId(int batchId,
+			int memberId) {
+
+		return jdbcTemplate.query(
+				"select * from documents where batch_id=? and user_id=?",
+				new Object[] { batchId, memberId }, new DocumentRowMapper());
 	}
 }

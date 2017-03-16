@@ -15,7 +15,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 <script src="js/pdf.js"></script>
 <script src="js/pdf.worker.js"></script>
-<script src="js/trainee.js"></script>
+<script src="js/trainee/trainee.js"></script>
 
 <link rel="stylesheet" href="css/jquery-ui.css">
 <script src="js/jquery.js"></script>

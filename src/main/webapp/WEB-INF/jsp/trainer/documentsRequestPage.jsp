@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
 <script src="js/jquery.dataTables.min.js"></script>
-<script src="js/trainer.js"></script>
+<script src="js/trainer/documentsRequestPage.js"></script>
 
 <script src="js/amcharts/amcharts.js"></script>
 <script src="js/amcharts/serial.js"></script>
@@ -86,7 +86,7 @@
 							<td>Reason <input type="text" style="display: none"
 								id="hiddenRequestId" />
 							</td>
-							<td><textarea rows="5" cols="20" id="reasonTextAreaId"></textarea></td>
+							<td><textarea rows="5" cols="35" id="reasonTextAreaId"></textarea></td>
 
 						</tr>
 						<tr>

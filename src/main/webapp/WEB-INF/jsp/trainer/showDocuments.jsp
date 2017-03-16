@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
 <link rel="stylesheet" type="text/css" href="css/trainer-body-style.css" />
-<script src="js/trainer.js"></script>
+<script src="js/trainer/showDocuments.js"></script>
 
 <!-- <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>

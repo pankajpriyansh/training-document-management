@@ -77,4 +77,9 @@ public interface DocumentService {
 
 	List getRequestedDocumentReportsAdvanceData(int fromMemberId, int toMemberId);
 
+	void shiftDocumentsByTrainer(int fromTrainerId, int toTrainerId,
+			List<Integer> documentsId);
+
+	List<Document> getAllDocumentsByBatchIdAndMemberId(int batchId, int memberId);
+
 }

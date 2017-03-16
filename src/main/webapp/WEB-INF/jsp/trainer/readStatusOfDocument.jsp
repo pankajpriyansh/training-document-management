@@ -5,7 +5,7 @@
 <script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/trainer-body-style.css" />
-<script src="js/trainer.js"></script>
+<script src="js/trainer/readStatusOfDocument.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
 <script src="js/amcharts/amcharts.js"></script>

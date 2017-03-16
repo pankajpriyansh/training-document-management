@@ -348,10 +348,12 @@ public class TrainerController {
 
 	@RequestMapping(value = "/getDocumentsByBatchId")
 	public void getDocumentsByBatchId(@RequestParam("batchId") int batchId,
-			HttpServletResponse response, ModelMap modelMap) throws IOException {
+			HttpServletResponse response, ModelMap modelMap, HttpSession session)
+			throws IOException {
 
 		List<Document> documents = documentService
-				.getAllDocumentsByBatchId(batchId);
+				.getAllDocumentsByBatchIdAndMemberId(batchId,
+						((Member) session.getAttribute("loggedInUser")).getId());
 		String jsonOfDocuments = new Gson().toJson(documents);
 		response.setContentType("application/json");
 		response.getWriter().append(jsonOfDocuments);

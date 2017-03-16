@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
 <script src="js/jquery.dataTables.min.js"></script>
-<script src="js/trainer.js"></script>
+<script src="js/trainer/documentRequestReportsPage.js"></script>
 
 <script src="js/amcharts/amcharts.js"></script>
 <script src="js/amcharts/serial.js"></script>

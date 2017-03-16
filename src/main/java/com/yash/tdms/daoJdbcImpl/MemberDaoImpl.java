@@ -173,7 +173,7 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public List getBatchMemberGraphData() {
 		return jdbcTemplate
-				.query("SELECT bat.name AS batchName,(SELECT COUNT(*) FROM members mem WHERE mem.`batch_id`=bat.id GROUP BY mem.`batch_id`) AS totalMembers, (SELECT COUNT(*) FROM documents doc WHERE doc.`batch_id`=bat.id GROUP BY doc.`batch_id` ) AS totalDocuments FROM batches bat;",
+				.query("SELECT bat.name AS batchName,(SELECT COUNT(*) FROM members mem WHERE mem.`batch_id`=bat.id GROUP BY mem.`batch_id`) AS totalMembers, IFNULL((SELECT COUNT(*) FROM documents doc WHERE doc.`batch_id`=bat.id GROUP BY doc.`batch_id` ),0) AS totalDocuments FROM batches bat;",
 						new BatchAndTotalMemberRowMapper());
 	}
 

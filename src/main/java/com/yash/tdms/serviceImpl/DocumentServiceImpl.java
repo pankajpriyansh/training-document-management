@@ -240,4 +240,18 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.getRequestedDocumentReportsAdvanceData(fromMemberId,
 				toMemberId);
 	}
+
+	@Override
+	public void shiftDocumentsByTrainer(int fromTrainerId, int toTrainerId,
+			List<Integer> documentsId) {
+		documentDao.shiftDocumentsByTrainer(fromTrainerId, toTrainerId,
+				documentsId);
+	}
+
+	@Override
+	public List<Document> getAllDocumentsByBatchIdAndMemberId(int batchId,
+			int memberId) {
+		return documentDao.getAllDocumentsByBatchIdAndMemberId(batchId,
+				memberId);
+	}
 }

@@ -7,7 +7,7 @@
 	href="css/jquery.dataTables.min.css" />
 	
 <link rel="stylesheet" type="text/css" href="css/admin-body-style.css" />
-<script src="js/admin.js"></script>
+<script src="js/admin/registrationRequestPage.js"></script>
 <script>
 	$(document).ready(function() {
 		jQuery.noConflict();
