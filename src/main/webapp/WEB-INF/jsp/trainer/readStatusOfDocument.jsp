@@ -8,11 +8,6 @@
 <script src="js/trainer/readStatusOfDocument.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
-<script src="js/amcharts/amcharts.js"></script>
-<script src="js/amcharts/serial.js"></script>
-<script src="js/amcharts/plugins/export/export.min.js"></script>
-<link rel="stylesheet" href="css/export.css" type="text/css" media="all" />
-<script src="js/amcharts/themes/light.js"></script>
 
 <script>
 	$(document).ready(function() {
