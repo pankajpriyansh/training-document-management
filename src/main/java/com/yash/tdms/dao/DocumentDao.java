@@ -78,4 +78,7 @@ public interface DocumentDao {
 
 	List<Document> getAllDocumentsByBatchIdAndMemberId(int batchId, int memberId);
 
+	List<Document> getAllDocumentsByUserIdBasedOnOperation(int memberId,
+			int flag);
+
 }

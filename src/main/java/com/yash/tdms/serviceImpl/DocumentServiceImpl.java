@@ -254,4 +254,11 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.getAllDocumentsByBatchIdAndMemberId(batchId,
 				memberId);
 	}
+
+	@Override
+	public List<Document> getAllDocumentsByUserIdBasedOnOperation(int memberId,
+			int flag) {
+		return documentDao.getAllDocumentsByUserIdBasedOnOperation(memberId,
+				flag);
+	}
 }

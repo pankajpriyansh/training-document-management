@@ -525,7 +525,8 @@ public class DocumentDaoImpl implements DocumentDao {
 		System.out.println(listOfRequestedDocuments);
 
 		List list = new ArrayList();
-		Map<String, Object> tempMap = new HashMap<String, Object>();
+		// Map<String, Object> tempMap = new HashMap<String, Object>();
+		List intermediateList = new ArrayList();
 		List<Document> totalDocuments = new ArrayList<Document>();
 		for (Object i : listOfRequestedDocuments) {
 			List tempList = (List) i;
@@ -550,17 +551,29 @@ public class DocumentDaoImpl implements DocumentDao {
 				tempMapOfDocumentNameAndStatus.put(doc.getName(), status + "/"
 						+ tempList.get(5));
 			});
-			tempMap.putAll(tempMapOfDocumentNameAndStatus);
+			intermediateList.add(tempMapOfDocumentNameAndStatus);
+			// tempMap.putAll(tempMapOfDocumentNameAndStatus);
 		}
-		tempMap.forEach((k, v) -> {
-			Map<String, Object> m = new HashMap<String, Object>();
-			m.put("documentName", k);
-			String value = (String) v;
-			m.put("status", value.split("/")[0]);
-			m.put("Date", value.split("/")[1]);
 
-			list.add(m);
+		intermediateList.forEach((i) -> {
+			Map<String, Object> interMap = (Map<String, Object>) i;
+			interMap.forEach((k, v) -> {
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("documentName", k);
+				String value = (String) v;
+				m.put("status", value.split("/")[0]);
+				m.put("Date", value.split("/")[1]);
+				list.add(m);
+			});
 		});
+		/*
+		 * tempMap.forEach((k, v) -> { Map<String, Object> m = new
+		 * HashMap<String, Object>(); m.put("documentName", k); String value =
+		 * (String) v; m.put("status", value.split("/")[0]); m.put("Date",
+		 * value.split("/")[1]);
+		 * 
+		 * list.add(m); });
+		 */
 		return list;
 	}
 
@@ -615,5 +628,13 @@ public class DocumentDaoImpl implements DocumentDao {
 		return jdbcTemplate.query(
 				"select * from documents where batch_id=? and user_id=?",
 				new Object[] { batchId, memberId }, new DocumentRowMapper());
+	}
+
+	@Override
+	public List<Document> getAllDocumentsByUserIdBasedOnOperation(int memberId,
+			int flag) {
+		return jdbcTemplate.query(
+				"select * from documents where user_id=? and isShow = ?",
+				new Object[] { memberId, flag }, new DocumentRowMapper());
 	}
 }

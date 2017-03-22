@@ -459,7 +459,7 @@ $(document)
 																$(
 																		'#newDocumentFormMessageId')
 																		.html(
-																				'Only pdf files are allowed to upload ');
+																				'Only pdf/mp4 files are allowed to upload ');
 															}
 															if (response == 'alreadyExists') {
 																$(
@@ -472,9 +472,7 @@ $(document)
 																		.html(
 																				response);
 																getSectionCategoryDocumentGraphData();
-
-																location
-																		.reload();
+																getBatchMemberGraphData();
 																$(
 																		"form#newDocumentForm")
 																		.trigger(

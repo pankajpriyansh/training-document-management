@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -212,7 +213,8 @@ public class TrainerController {
 			@RequestParam("category") String categoryName, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
-		if (!file.getOriginalFilename().endsWith(".pdf")) {
+		if (!file.getOriginalFilename().endsWith(".pdf")
+				&& !file.getOriginalFilename().endsWith(".mp4")) {
 			response.getWriter().append("FileNotPDF");
 			return;
 		}
@@ -225,6 +227,7 @@ public class TrainerController {
 				+ file.getOriginalFilename());
 		document.setUser_id(((Member) session.getAttribute("loggedInUser"))
 				.getId());
+		System.out.println(document);
 		String workingDir = request.getServletContext().getRealPath("");
 		documentService.uploadFile(file, workingDir, document.getFilePath());
 		documentService.addDocument(document);
@@ -548,4 +551,29 @@ public class TrainerController {
 		response.getWriter().append(jsonData);
 	}
 
+	@RequestMapping(value = "/showDocumentsBasedOnSelection")
+	public String showDocumentsBasedOnSelection(
+			@RequestParam("operation") String operation, HttpSession session,
+			ModelMap modelMap) throws IOException {
+		int flag = 0;
+		List<Document> documents = new ArrayList<Document>();
+		if (operation.equals("SHOW"))
+			flag = 1;
+		else if (operation.equals("HIDE"))
+			flag = 2;
+		if (flag == 1 || flag == 2) {
+			documents = documentService
+					.getAllDocumentsByUserIdBasedOnOperation(((Member) session
+							.getAttribute("loggedInUser")).getId(), flag);
+		} else {
+			documents = documentService
+					.getAllDocumentsByUserId(((Member) session
+							.getAttribute("loggedInUser")).getId());
+		}
+
+		modelMap.addAttribute("documents", documents);
+		modelMap.addAttribute("batches", batchService.getAllBatches());
+		modelMap.addAttribute("sections", sectionService.getAllSections());
+		return "showDocumentsPage";
+	}
 }

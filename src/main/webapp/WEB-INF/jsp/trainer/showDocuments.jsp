@@ -1,7 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/pdf.worker.js"></script>
 
+<link href="css/video-js.min.css" rel="stylesheet">
+<script src="js/video.min.js"></script>
 <!-- 
 <script
 	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script> -->
@@ -22,6 +26,15 @@
 		});
 	});
 </script>
+
+<style type="text/css">
+.pdf {
+	height: 400px;
+	overflow-x: scroll;
+	overflow-y: scroll;
+}
+</style>
+
 <div class="col-sm-12 overflow ">
 	<br>
 
@@ -60,7 +73,14 @@
 					(yyyy-mm-dd) id='filterTextOfCreatedDateColumn'
 					style='display: inline-block'
 					onchange='filterTextOfCreatedDateColumn()' /></th>
-				<th>Operation</th>
+				<th>Operation <select id="filterTextOfOperationColumn"
+					style='display: inline-block'>
+						<option disabled selected>Select</option>
+						<option value="SHOW">SHOW</option>
+						<option value="HIDE">HIDE</option>
+						<option value="ALL">ALL</option>
+				</select>
+				</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -87,7 +107,10 @@
 					<td><button class="btn btn-primary btn-xs editDoc "
 							documentId="${document.getId()}">Edit</button>
 						<button class="btn btn-danger btn-xs deleteDoc"
-							documentId="${document.getId()}">Delete</button></td>
+							documentId="${document.getId()}">Delete</button>
+						<button class="btn btn-success btn-xs displayDoc"
+							documentPath="${document.getFilePath()}"
+							documentName="${document.getName()}">Display</button></td>
 				</tr>
 			</c:forEach>
 
@@ -164,3 +187,34 @@
 	</div>
 </div>
 <!-- /Modal5 -->
+
+<!-- Modal 6 -->
+<div id="displayDocumentModal" class="modal">
+	<div class="modal-dialog " style="height: 800px; margin-left: 130px">
+		<div class="modal-content" id="mcnt" style="width: 1100px;">
+			<div class="modal-header">
+				<button type="button" class="close" id="closeDisplayDocumentModelId"">&times;</button>
+				<h3 class="modal-title" id="displayDocumentModalHeadingId"
+					align="center"></h3>
+			</div>
+			<div id="buttonsOfPdf" align="center">
+				<button type="button" id="previouspage"
+					class="btn btn-primary btn-xs ">Previous</button>
+				<button class="btn" id="zoom">
+					<span class="glyphicon glyphicon-zoom-out gray"></span>
+				</button>
+				<button type="button" id="nextpage" class="btn btn-primary btn-xs">Next</button>
+			</div>
+			<div class="pdf" id="page" align="center">
+				<canvas id="canvas"></canvas>
+			</div>
+			<div align="center">
+				<video id="my-player" class="video-js" controls preload="auto"
+					width="500px" height="350px" poster="images/videoimg.jpg"
+					data-setup='{}' style="display: none">
+				</video>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal 6 -->

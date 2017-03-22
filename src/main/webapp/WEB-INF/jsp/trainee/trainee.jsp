@@ -21,6 +21,10 @@
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui.js"></script>
 
+<link href="css/video-js.min.css" rel="stylesheet">
+<script src="js/video.min.js"></script>
+
+
 <!--Description and Sidebar START -->
 <div class="container-fluid grey description-sidebar-container">
 
@@ -87,7 +91,6 @@
 		</div>
 	</div>
 
-
 	<!--SIDEBAR END -->
 	<!--Display Area-->
 	<div class="container-fluid grey ">
@@ -95,10 +98,12 @@
 			<div class="row ">
 				<div class="col-md-9 display-pdf ">
 					<div class="display-section">
-						<!-- <iframe class="embed-responsive-item"
-						src="http://www.w3schools.com/bootstrap/bootstrap_grid_examples.asp"></iframe> -->
 						<div class="pdf" id="page" align="center">
 							<canvas id="canvas"></canvas>
+							<video id="my-player" class="video-js" controls preload="auto"
+								width="1000px" height="400px" poster="images/videoimg.jpg"
+								data-setup='{}' style="display: none">
+							</video>
 						</div>
 					</div>
 				</div>
@@ -181,5 +186,4 @@
 </div>
 
 <!-- Modal1 Raise Request End -->
-
 

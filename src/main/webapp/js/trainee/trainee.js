@@ -20,10 +20,19 @@ $(document)
 					$('#canvas').on("contextmenu", function(e) {
 						e.preventDefault();
 					});
+					
+					$('#my-player').on("contextmenu", function(e) {
+						e.preventDefault();
+					});
 
 					jQuery('.DocumentBox')
 							.click(
 									function() {
+										var videoBoxId = document
+												.getElementById('my-player');
+										videoBoxId.style.display = "none";
+										$('#my-player_html5_api').attr("src",
+												"");
 										var description = $(this).attr(
 												'documentDescription');
 										var documentPath = $(this).attr(
@@ -44,15 +53,31 @@ $(document)
 										});
 										$('.description p').html(description);
 
-										PDFJS.disableStream = true;
-										PDFJS.getDocument(
-												'Documents/' + documentPath)
-												.then(function(pdf) {
-													pdfFile = pdf;
-													console.log(pageElement);
-													openPage(pdf, 1);
-												});
+										if (documentPath.endsWith(".mp4")) {
+											videoBoxId.style.display = "block";
+											console.log('file is mp4');
+											$('#my-player_html5_api').attr(
+													"style", "display : block");
+											$('#my-player_html5_api')
+													.attr(
+															"src",
+															'Documents/'
+																	+ documentPath);
+										} else {
 
+											PDFJS.disableStream = true;
+											PDFJS
+													.getDocument(
+															'Documents/'
+																	+ documentPath)
+													.then(
+															function(pdf) {
+																pdfFile = pdf;
+																console
+																		.log(pageElement);
+																openPage(pdf, 1);
+															});
+										}
 									})
 
 					$('#nextpage').click(function() {
