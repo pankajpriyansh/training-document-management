@@ -7,7 +7,7 @@ $(document).ready(function() {
 		console.log(value, "  ", memberId);
 
 		$.ajax({
-			url : "./activateMember.html",
+			url : "./registerMember.html",
 			data : {
 				memberId : memberId
 			},

@@ -46,15 +46,15 @@ public interface MemberDao {
 	 */
 	public void editMember(int id);
 
-	public boolean checkForAuthentication(String email, String password);
+	// public boolean checkForAuthentication(String email, String password);
 
 	public Member getMemberByEmail(String email);
 
 	public boolean checkIfEmailExists(String email);
 
-	public List getNonActiveMembers();
+	public List getNonRegisteredMembers();
 
-	public void activateMember(int memberId);
+	public void registerMember(int memberId);
 
 	public void changeRole(int memberId, int role);
 
@@ -64,6 +64,12 @@ public interface MemberDao {
 
 	public List getBatchMemberGraphData();
 
-	public void changePassword(String email, String newPassword);
+	// public void changePassword(String email, String newPassword);
+
+	public void shiftMemberByBatch(int fromBatchId, int toBatchId, int memberId);
+
+	public List<Member> getAllTraineesByBatchId(int batchId);
+
+	public void setMemberIsActive(int memberId, boolean status);
 
 }

@@ -14,8 +14,8 @@
 
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
-<link rel="stylesheet" type="text/css" href="css/trainer-body-style.css" />
-<script src="js/trainer/showDocuments.js"></script>
+<link rel="stylesheet" type="text/css" href="css/admin-body-style.css" />
+<script src="js/admin/showDocuments.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -34,6 +34,43 @@
 	overflow-y: scroll;
 }
 </style>
+
+<form id="SelectBatchAndTrainerForm"
+	action="./getDocumentsBasedOnTrainerAndBatch.html" method="post">
+	<table>
+		<tr>
+			<td>&nbsp; &nbsp;&nbsp;&nbsp;</td>
+			<td>Select Batch</td>
+			<td>&nbsp; &nbsp;</td>
+			<td><select id="batchSelectBoxId" name="batchId"
+				class="form-control" required="required">
+					<option disabled selected></option>
+					<c:forEach items="${batches}" var="batch">
+						<option value="${batch.id}">${batch.name}</option>
+					</c:forEach>
+			</select></td>
+			<td>&nbsp; &nbsp;&nbsp;&nbsp;</td>
+			<td>Select Trainer</td>
+			<td>&nbsp; &nbsp;</td>
+
+			<td><select id="trainerSelectBoxId" name="memberId"
+				class="form-control" required="required">
+					<option disabled selected></option>
+					<c:forEach items="${trainers}" var="trainer">
+						<option value="${trainer.id}">${trainer.email}</option>
+					</c:forEach>
+			</select></td>
+			<td>&nbsp; &nbsp;&nbsp;&nbsp;</td>
+			<td><input type="radio" name="statusOfDocuments" value="all"
+				checked />All <input type="radio" name="statusOfDocuments"
+				value="favourite" />Favourites</td>
+			<td>&nbsp; &nbsp;</td>
+
+			<td colspan="2" align="right"><button type="submit"
+					class="btn btn-primary">Search</button></td>
+		</tr>
+	</table>
+</form>
 
 <div class="col-sm-12 overflow ">
 	<br>
@@ -65,14 +102,14 @@
 					(yyyy-mm-dd) id='filterTextOfCreatedDateColumn'
 					style='display: inline-block'
 					onchange='filterTextOfCreatedDateColumn()' /></th>
-				<th>Operation <select id="filterTextOfOperationColumn"
+				<!-- <th>Operation <select id="filterTextOfOperationColumn"
 					style='display: inline-block'>
 						<option disabled selected>Select</option>
 						<option value="SHOW">SHOW</option>
 						<option value="HIDE">HIDE</option>
 						<option value="ALL">ALL</option>
 				</select>
-				</th>
+				</th> -->
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -90,12 +127,12 @@
 							<c:if test="${document.getBatchId() == batch.id}"> ${batch.name}</c:if>
 						</c:forEach></td>
 					<td>${document.getCreatedDate()}</td>
-					<td><input type="radio" documentId="${document.getId()}"
+					<%-- <td><input type="radio" documentId="${document.getId()}"
 						name="action${document.getId()}" value="show"
 						<c:if test="${document.getIsShow() == 1}"> checked</c:if> />SHOW
 						<br> <input type="radio" name="action${document.getId()}"
 						documentId="${document.getId()}" value="hide"
-						<c:if test="${document.getIsShow() == 2}"> checked</c:if> />HIDE</td>
+						<c:if test="${document.getIsShow() == 2}"> checked</c:if> />HIDE</td> --%>
 					<td><button class="btn btn-primary btn-xs editDoc "
 							documentId="${document.getId()}">Edit</button>
 						<button class="btn btn-danger btn-xs deleteDoc"
@@ -145,40 +182,6 @@
 </div>
 <!-- /Modal 4 -->
 
-
-<!-- Modal 5 -->
-<div id="documentShowStatusModal" class="modal">
-	<div class="modal-dialog">
-		<!-- Modal content -->
-		<div class="modal-content"">
-			<div class="modal-header">
-				<button type="button" class="close"
-					id="closeDocumentShowStatusModal">&times;</button>
-				<h3 class="modal-title" align="center">Status Change of
-					Document</h3>
-			</div>
-			<div class="modal-body">
-				<input type="text" id="documentShowStatusModalDocumentId"
-					style="display: none"> <input type="text"
-					id="documentShowStatusModalStatusValue" style="display: none">
-				<br> For All :
-				<button id="forAllDocumentShowStatusButtonId"
-					class="btn btn-primary">Change Status</button>
-				<br> <br> <br> <br>For Specific Member :<br>
-				Select Member : <select
-					id="forSpecificMemberDocumentShowStatusSelectBoxId">
-					<option disabled selected>Select</option>
-
-				</select> <br>
-				<button id="forSpecificMemberDocumentShowStatusButtonId"
-					class="btn btn-primary">Change Status</button>
-
-
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Modal5 -->
 
 <!-- Modal 6 -->
 <div id="displayDocumentModal" class="modal">

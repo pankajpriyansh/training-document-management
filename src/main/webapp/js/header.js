@@ -1,6 +1,6 @@
 $(document)
 		.ready(
-				function() {
+				function() {/*
 
 					var changePasswordModal = document
 							.getElementById('changePasswordModal');
@@ -12,9 +12,9 @@ $(document)
 						$("form#changePasswordForm").trigger("reset");
 					});
 
-					/**
+					*//**
 					 * close button to close change password modal
-					 */
+					 *//*
 					$('#closechangePasswordModalId').click(function() {
 						changePasswordModal.style.display = "none";
 					});
@@ -82,4 +82,4 @@ $(document)
 										}
 									});
 
-				});
+				*/});

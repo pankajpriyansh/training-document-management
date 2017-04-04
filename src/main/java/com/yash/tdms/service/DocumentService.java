@@ -58,6 +58,9 @@ public interface DocumentService {
 
 	void shiftDocumentsByBatch(int fromBatchId, int toBatchId, int memberId);
 
+	void shiftDocumentsBySection(int fromBatchId, int toBatchId, int sectionId,
+			int memberId);
+
 	void shiftDocumentsByCategory(int documentId, int fromCategoryId,
 			int toCategory, String workingDir);
 
@@ -82,6 +85,10 @@ public interface DocumentService {
 
 	List<Document> getAllDocumentsByBatchIdAndMemberId(int batchId, int memberId);
 
-	List<Document> getAllDocumentsByUserIdBasedOnOperation(int memberId, int flag);
+	List<Document> getAllDocumentsByUserIdBasedOnOperation(int memberId,
+			int flag);
+
+	List<Document> getFavouriteDocumentsByBatchIdAndMemberId(int batchId,
+			int memberId);
 
 }

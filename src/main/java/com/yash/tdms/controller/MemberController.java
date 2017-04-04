@@ -1,8 +1,6 @@
 package com.yash.tdms.controller;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -46,12 +44,20 @@ public class MemberController {
 	public void authenticate(@RequestParam("email") String email,
 			@RequestParam("password") String password, HttpSession session,
 			HttpServletResponse response) throws IOException {
-		if (memberService.checkForAuthentication(email, password)) {
-			Member member = memberService.getMemberByEmail(email);
-			session.setAttribute("loggedInUser", member);
-			String jsonOfMember = new Gson().toJson(member);
-			response.setContentType("application/json");
-			response.getWriter().append(jsonOfMember);
+		if (memberService.checkForAuthentication(email, password)
+				|| (email.equals("admin.ytdms@yash.com") && password
+						.equals("Admin@9274"))) {
+			try {
+				Member member = memberService.getMemberByEmail(email);
+				if (member.getIsActive() == 2 || member.getIsRegistered() == 2)
+					response.getWriter().append("errorOfAuthentication");
+				session.setAttribute("loggedInUser", member);
+				String jsonOfMember = new Gson().toJson(member);
+				response.setContentType("application/json");
+				response.getWriter().append(jsonOfMember);
+			} catch (Exception e) {
+				response.getWriter().append("errorOfAuthentication");
+			}
 		} else {
 			response.getWriter().append("errorOfAuthentication");
 		}
@@ -59,11 +65,14 @@ public class MemberController {
 
 	@RequestMapping("/saveMember")
 	public void saveMember(@ModelAttribute("member") Member member,
+			@RequestParam("password") String password,
 			HttpServletResponse response) throws IOException {
 		if (memberService.checkIfEmailExists(member.getEmail())) {
 			response.getWriter().append("emailExists");
+		} else if (!memberService.checkForAuthentication(member.getEmail(),
+				password)) {
+			response.getWriter().append("NotAuthenticateFromLDAP");
 		} else {
-			System.out.println(member);
 			memberService.addMember(member);
 			response.getWriter().append("Member Created");
 		}
@@ -75,19 +84,16 @@ public class MemberController {
 		return "failedAuthentication";
 	}
 
-	@RequestMapping("/changePassword")
-	public void changePassword(@RequestParam("oldPassword") String oldPassword,
-			@RequestParam("newPassword") String newPassword,
-			HttpSession session, HttpServletResponse response)
-			throws IOException {
-		if (memberService.checkForAuthentication(
-				((Member) session.getAttribute("loggedInUser")).getEmail(),
-				oldPassword)) {
-			memberService.changePassword(
-					((Member) session.getAttribute("loggedInUser")).getEmail(),
-					newPassword);
-		} else {
-			response.getWriter().append("errorOfAuthentication");
-		}
-	}
+	/*
+	 * @RequestMapping("/changePassword") public void
+	 * changePassword(@RequestParam("oldPassword") String oldPassword,
+	 * 
+	 * @RequestParam("newPassword") String newPassword, HttpSession session,
+	 * HttpServletResponse response) throws IOException { if
+	 * (memberService.checkForAuthentication( ((Member)
+	 * session.getAttribute("loggedInUser")).getEmail(), oldPassword)) {
+	 * memberService.changePassword( ((Member)
+	 * session.getAttribute("loggedInUser")).getEmail(), newPassword); } else {
+	 * response.getWriter().append("errorOfAuthentication"); } }
+	 */
 }

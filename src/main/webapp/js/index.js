@@ -90,13 +90,12 @@ $(document)
 											email : {
 												required : true,
 												regx : /[a-zA-Z_][a-zA-Z0-9\.]+@(yash\.com|YASH\.COM|YASH\.com)/
-											},
-											password : {
-												required : true,
-												minlength : 7,
-												maxlength : 16,
-												regx : /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,16}$/
 											}
+										/*
+										 * , password : { required : true,
+										 * minlength : 7, maxlength : 16, regx :
+										 * /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,16}$/ }
+										 */
 										},
 										// Specify validation error messages
 										messages : {
@@ -117,13 +116,17 @@ $(document)
 												regx : "contact no. must be integer",
 												minlength : "contact no. have atleast 10 digits",
 												maxlength : "contact no. have atmost 11 digits"
-											},
-											password : {
-												required : "Please provide a password",
-												minlength : "Password contain at least 8 characters",
-												maxlength : "Password contain at most 16 characters",
-												regx : "Password must have alteast 1 letter, 1 digit , 1 special symbol"
-											},
+											}/*
+												 * , password : { required :
+												 * "Please provide a password",
+												 * minlength : "Password contain
+												 * at least 8 characters",
+												 * maxlength : "Password contain
+												 * at most 16 characters", regx :
+												 * "Password must have alteast 1
+												 * letter, 1 digit , 1 special
+												 * symbol" }
+												 */,
 											email : {
 												required : "Please enter your email address",
 												regx : "Email must be valid and  have Yash domain"
@@ -140,11 +143,18 @@ $(document)
 														data : registrationFormData,
 														success : function(
 																response) {
+															console
+																	.log(response);
 															if (response == 'emailExists') {
 																$(
 																		'#registrationFormMessageId')
 																		.html(
 																				'Email Already Exists');
+															} else if (response == 'NotAuthenticateFromLDAP') {
+																$(
+																		'#registrationFormMessageId')
+																		.html(
+																				"Please Write your YASH's email and password");
 															} else {
 																alert('Member added');
 																$(
@@ -173,19 +183,21 @@ $(document)
 											email : {
 												required : true,
 												email : true
-											},
-											password : {
-												required : true,
-												minlength : 5
 											}
+										/*
+										 * , password : { required : true,
+										 * minlength : 5 }
+										 */
 										},
 										// Specify validation error messages
 										messages : {
-											password : {
-												required : "Please provide a password",
-												minlength : "Your password must be at least 5 characters long"
-											},
-											email : "Please enter a valid email address"
+											/*
+											 * password : { required : "Please
+											 * provide a password", minlength :
+											 * "Your password must be at least 5
+											 * characters long" },
+											 */
+											email : "Please enter a valid YASH email address"
 										},
 										submitHandler : function(form) {
 											var loginFormData = $(

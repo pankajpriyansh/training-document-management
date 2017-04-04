@@ -34,10 +34,12 @@ public class Member {
 	 * email of the member
 	 */
 	private String email;
+
+	private int isRegistered;
 	/**
 	 * password of the member
 	 */
-	private String password;
+	// private String password;
 	/**
 	 * isActive will be used to check whether the the user is Active or
 	 * Registered user 1. Active, 2.Registered Admin will have to activate the
@@ -76,6 +78,14 @@ public class Member {
 	 * 
 	 */
 	private int batchId;
+
+	public int getIsRegistered() {
+		return isRegistered;
+	}
+
+	public void setIsRegistered(int isRegistered) {
+		this.isRegistered = isRegistered;
+	}
 
 	public int getBatchId() {
 		return batchId;
@@ -125,13 +135,11 @@ public class Member {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	/*
+	 * public String getPassword() { return password; }
+	 * 
+	 * public void setPassword(String password) { this.password = password; }
+	 */
 
 	public int getIsActive() {
 		return isActive;
@@ -185,11 +193,10 @@ public class Member {
 	public String toString() {
 		return "Member [id=" + id + ", firstname=" + firstname + ", lastname="
 				+ lastname + ", contact=" + contact + ", email=" + email
-				+ ", password=" + password + ", isActive=" + isActive
-				+ ", role=" + role + ", createdBy=" + createdBy
-				+ ", modifiedBy=" + modifiedBy + ", createdDate=" + createdDate
-				+ ", modifiedDate=" + modifiedDate + ", batchId=" + batchId
-				+ "]";
+				+ ", isActive=" + isActive + ", role=" + role + ", createdBy="
+				+ createdBy + ", modifiedBy=" + modifiedBy + ", createdDate="
+				+ createdDate + ", modifiedDate=" + modifiedDate + ", batchId="
+				+ batchId + "]";
 	}
 
 }

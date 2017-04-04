@@ -81,4 +81,10 @@ public interface DocumentDao {
 	List<Document> getAllDocumentsByUserIdBasedOnOperation(int memberId,
 			int flag);
 
+	List<Document> getFavouriteDocumentsByBatchIdAndMemberId(int batchId,
+			int memberId);
+
+	void shiftDocumentsBySection(int fromBatchId, int toBatchId, int sectionId,
+			int memberId);
+
 }

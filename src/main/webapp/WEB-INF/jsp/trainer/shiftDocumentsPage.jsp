@@ -4,7 +4,7 @@
 <script src="js/trainer/shiftDocumentsPage.js"></script>
 
 <div class="shiftdatadcontent">
-	<div style="float: left; margin-top: 50px; margin-left: 150px;">
+	<div style="float: left; margin-top: 50px; margin-left: 100px;">
 
 
 		<form id="shiftDocumentsPageBatchFormId">
@@ -48,7 +48,68 @@
 
 	</div>
 
-	<div style="float: right; margin-right: 300px; margin-top: 50px">
+
+
+	<div style="float: left; margin-top: 50px; margin-left: 50px;">
+
+
+		<form id="shiftDocumentsPageBatchSectionFormId">
+
+			<table class="shiftcard">
+				<tr>
+					<td colspan="2" align="center"><b>By Section </b></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<p id="shiftDocumentsByBatchSectionFormMessageId"
+							style="color: red"></p>
+					</td>
+				</tr>
+				<tr>
+					<td>From Batch :</td>
+					<td><select id="shiftDocumentsPageFromBatchSectionSelectBoxId"
+						name="fromBatchId" required="required" class="form-control">
+							<option disabled selected></option>
+							<c:forEach items="${batches}" var="batch">
+								<option value="${batch.id}">${batch.name}</option>
+							</c:forEach>
+					</select></td>
+				</tr>
+				<tr>
+					<td>From Section :</td>
+					<td><select id="shiftDocumentsPageFromSectionSelectBoxId"
+						name="sectionId" required="required" class="form-control">
+							<option disabled selected></option>
+							<c:forEach items="${sections}" var="section">
+								<option value="${section.id}">${section.name}</option>
+							</c:forEach>
+					</select></td>
+				</tr>
+				<tr>
+					<td>To Batch:</td>
+					<td><select id="shiftDocumentsPageToBatchSectionSelectBoxId"
+						name="toBatchId" required="required" class="form-control">
+							<option disabled selected></option>
+							<c:forEach items="${batches}" var="batch">
+								<option value="${batch.id}">${batch.name}</option>
+							</c:forEach>
+					</select></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right"><button type="submit"
+							class="btn btn-primary">Copy</button></td>
+
+				</tr>
+			</table>
+		</form>
+
+	</div>
+
+
+
+	<!-- 	<div style="float: right; margin-right: 300px; margin-top: 50px">
+ -->
+	<div style="float: left; margin-top: 50px; margin-left: 50px;">
 		<form id="shiftDocumentsPageCategoryFormId">
 			<table class="shiftcard">
 				<tr>

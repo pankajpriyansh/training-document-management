@@ -20,7 +20,7 @@ $(document)
 					$('#canvas').on("contextmenu", function(e) {
 						e.preventDefault();
 					});
-					
+
 					$('#my-player').on("contextmenu", function(e) {
 						e.preventDefault();
 					});
@@ -286,13 +286,15 @@ $(document)
 														alert('list not fetch ');
 													}
 												});
-
-										raiseRequestModal.style.display = "block";
 										$('#raiseRequestFormMessageId')
 												.html('');
-										$("form#raiseRequestForm").trigger(
-												"reset");
-
+										/*
+										 * raiseRequestModal.style.display =
+										 * "block";
+										 * 
+										 * $("form#raiseRequestForm").trigger(
+										 * "reset");
+										 */
 									});
 
 					/**

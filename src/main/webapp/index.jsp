@@ -352,6 +352,8 @@
 			<div class="modal-header">
 				<button type="button" class="close" id="closeRegistrationModelId">&times;</button>
 				<h3>Registration</h3>
+				<p align="center" style="color: green">Register With YASH
+					Credentials</p>
 			</div>
 			<div align="center">
 				<p id="registrationFormMessageId" style="color: red"></p>

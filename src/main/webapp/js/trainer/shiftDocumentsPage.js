@@ -4,6 +4,56 @@ $(document)
 					var dataListOfDocuments = document
 							.getElementById('documentsOfShiftDocumentsPage');
 
+					$("form#shiftDocumentsPageBatchSectionFormId")
+							.submit(
+									function(e) {
+										e.preventDefault();
+
+										console.log('submitted');
+										var formData = $(
+												"form#shiftDocumentsPageBatchSectionFormId")
+												.serialize();
+										console.log(formData);
+
+										$
+												.ajax({
+													type : "POST",
+													url : "./shiftDocumentsBySection.html",
+													data : formData,
+													success : function(response) {
+														if (response == 'bothBatchSame') {
+															$(
+																	'#shiftDocumentsByBatchSectionFormMessageId')
+																	.html(
+																			'Please Select Different Batch');
+														} else {
+
+															console
+																	.log(response);
+
+															$(
+																	'#shiftDocumentsByBatchSectionFormMessageId')
+																	.html("");
+															$(
+																	"form#shiftDocumentsPageBatchSectionFormId")
+																	.trigger(
+																			"reset");
+															alert('data Copied to new Batch');
+															// location.reload();
+														}
+													},
+													error : function(
+															textStatus,
+															errorThrown) {
+														console.log(textStatus);
+														alert('Document Not  Copied');
+													}
+												});
+										$("form#shiftDocumentsPageBatchFormId")
+												.trigger("reset");
+
+									});
+
 					$("form#shiftDocumentsPageBatchFormId")
 							.submit(
 									function(e) {

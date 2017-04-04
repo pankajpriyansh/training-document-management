@@ -637,4 +637,82 @@ public class DocumentDaoImpl implements DocumentDao {
 				"select * from documents where user_id=? and isShow = ?",
 				new Object[] { memberId, flag }, new DocumentRowMapper());
 	}
+
+	@Override
+	public List<Document> getFavouriteDocumentsByBatchIdAndMemberId(
+			int batchId, int memberId) {
+		return jdbcTemplate
+				.query("SELECT * FROM documents WHERE id IN(SELECT DISTINCT document_id FROM `members_documents_junction` WHERE COUNT>7) AND createdby=? AND batch_id=?",
+						new Object[] { memberId, batchId },
+						new DocumentRowMapper());
+	}
+
+	@Override
+	public void shiftDocumentsBySection(int fromBatchId, int toBatchId,
+			int sectionId, int memberId) {
+
+		List<Document> documents = jdbcTemplate
+				.query("select * from documents where batch_id=? and createdby = ? and category_id IN(select id from categories where section_id=?)",
+						new Object[] { fromBatchId, memberId, sectionId },
+						new DocumentRowMapper());
+
+		String deleteSqlString = "delete from documents where category_id =? and batch_id=?";
+
+		jdbcTemplate.batchUpdate(deleteSqlString,
+				new BatchPreparedStatementSetter() {
+
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						Document document = documents.get(i);
+						ps.setInt(1, document.getCategory_id());
+						ps.setInt(2, toBatchId);
+					}
+
+					@Override
+					public int getBatchSize() {
+						return documents.size();
+					}
+
+				});
+
+		String insertSqlString = "INSERT INTO documents(user_id,category_id,NAME,description,createdby,modifiedby,createddate,modifieddate,filepath,batch_id) VALUES (?,?,?,?,?,?,?,?,?,?);";
+
+		jdbcTemplate.batchUpdate(insertSqlString,
+				new BatchPreparedStatementSetter() {
+
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						Document document = documents.get(i);
+						ps.setInt(1, document.getUser_id());
+						ps.setInt(2, document.getCategory_id());
+						ps.setString(3, document.getName());
+						ps.setString(4, document.getDescription());
+						ps.setInt(5, document.getCreatedBy());
+						ps.setInt(6, document.getModifiedBy());
+						ps.setDate(7, new java.sql.Date(document
+								.getCreatedDate().getTime()));
+						ps.setDate(8, new java.sql.Date(document
+								.getModifiedDate().getTime()));
+						ps.setString(9, document.getFilePath());
+						ps.setInt(10, toBatchId);
+					}
+
+					@Override
+					public int getBatchSize() {
+						return documents.size();
+					}
+
+				});
+
+	}
+
+	/*
+	 * private static final class IntegerRowMapper implements RowMapper<Integer>
+	 * {
+	 * 
+	 * public Integer mapRow(ResultSet resultSet, int rowNum) throws
+	 * SQLException { return resultSet.getInt("id"); } }
+	 */
 }

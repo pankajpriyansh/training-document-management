@@ -31,18 +31,18 @@
 			<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"
 				style="margin-left: 162px;">
 				<li><a class="links">My Profile</a></li>
-				<li><a class="links" id="changePassword" href="#">Change
-						Password</a></li>
+				<!-- <li><a class="links" id="changePassword" href="#">Change
+						Password</a></li> -->
 				<li><a class="links" href="./logout.html">Logout</a></li>
 			</ul>
 		</div>
 
 
-
-		<!-- Modal 1 -->
+<!-- 
+		Modal 1
 		<div id="changePasswordModal" class="modal">
 			<div class="modal-dialog">
-				<!-- Modal content -->
+				Modal content
 				<div class="modal-content"">
 					<div class="modal-header">
 						<button type="button" class="close"
@@ -82,9 +82,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- /Modal 1 -->
+		/Modal 1
 
-
+ -->
 
 
 

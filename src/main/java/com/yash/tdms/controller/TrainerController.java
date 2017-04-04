@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -419,6 +418,7 @@ public class TrainerController {
 	public String shiftDocumentsPage(HttpServletResponse response,
 			ModelMap modelMap, HttpSession session) throws IOException {
 		modelMap.addAttribute("batches", batchService.getAllBatches());
+		modelMap.addAttribute("sections", sectionService.getAllSections());
 		/*
 		 * List<Document> documents = documentService
 		 * .getAllDocumentsByUserId(((Member) session
@@ -438,6 +438,25 @@ public class TrainerController {
 			return;
 		}
 		documentService.shiftDocumentsByBatch(fromBatchId, toBatchId,
+				((Member) session.getAttribute("loggedInUser")).getId());
+		response.getWriter().append("");
+	}
+
+	@RequestMapping(value = "/shiftDocumentsBySection")
+	public void shiftDocumentsBySection(
+			@RequestParam("fromBatchId") int fromBatchId,
+			@RequestParam("toBatchId") int toBatchId,
+			@RequestParam("sectionId") int sectionId, HttpSession session,
+			HttpServletResponse response) throws IOException {
+		System.out
+				.println("INSIDE ****************************************************** "
+						+ sectionId);
+		if (fromBatchId == toBatchId) {
+			response.getWriter().append("bothBatchSame");
+			return;
+		}
+		documentService.shiftDocumentsBySection(fromBatchId, toBatchId,
+				sectionId,
 				((Member) session.getAttribute("loggedInUser")).getId());
 		response.getWriter().append("");
 	}

@@ -76,6 +76,7 @@
 		<put-attribute name="title" value="Trainee Page" />
 		<put-attribute name="body" value="/WEB-INF/jsp/trainee/trainee.jsp" />
 	</definition>
+
 	<!-- Trainee Related Mapping Ends -->
 
 	<!-- Admin Related Mapping Starts -->
@@ -87,15 +88,16 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/admin.jsp" />
 	</definition>
 
-	<definition name="registrationRequestPage" extends="common">
+	<definition name="registrationRequestPage" extends="admin">
 		<put-attribute name="title" value="Admin Page" />
 		<put-attribute name="sideNavBar"
 			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/admin/registrationRequestPage.jsp" />
 	</definition>
-	<definition name="shiftDocumentsAccordingToTrainerPage"
-		extends="common">
+
+	<definition name="shiftDocumentsAccordingToAdminPage"
+		extends="admin">
 		<put-attribute name="title" value="Admin Page" />
 		<put-attribute name="sideNavBar"
 			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
@@ -103,6 +105,29 @@
 			value="/WEB-INF/jsp/admin/shiftDocumentsPage.jsp" />
 	</definition>
 
+	<definition name="showDocumentsAdminPage" extends="admin">
+		<put-attribute name="title" value="Admin Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/showDocuments.jsp" />
+	</definition>
+
+	<definition name="shiftBatchOfUserPage" extends="admin">
+		<put-attribute name="title" value="Admin Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/shiftBatchOfUserPage.jsp" />
+	</definition>
+
+	<definition name="memberActivateDeactivate" extends="admin">
+		<put-attribute name="title" value="Admin Page" />
+		<put-attribute name="sideNavBar"
+			value="/WEB-INF/jsp/admin/adminSideNavBar.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/memberActivateDeactivate.jsp" />
+	</definition>
 
 	<!-- Admin Related Mapping ends -->
 

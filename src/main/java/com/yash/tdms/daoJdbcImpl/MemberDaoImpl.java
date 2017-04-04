@@ -42,17 +42,17 @@ public class MemberDaoImpl implements MemberDao {
 
 	public void addMember(Member member) {
 		jdbcTemplate
-				.update("INSERT INTO members(firstname,lastname,contact,email,PASSWORD,createddate,modifiedDate,batch_id) VALUES (?,?,?,?,?,?,?,?)",
+				.update("INSERT INTO members(firstname,lastname,contact,email,createddate,modifiedDate,batch_id) VALUES (?,?,?,?,?,?,?)",
 						new Object[] { member.getFirstname(),
 								member.getLastname(), member.getContact(),
-								member.getEmail(), member.getPassword(),
+								member.getEmail(),
 								new Timestamp(new Date().getTime()),
 								new Timestamp(new Date().getTime()),
 								member.getBatchId() });
 	}
 
 	public List<Member> getAllMembers() {
-		return jdbcTemplate.query("select * from members ",
+		return jdbcTemplate.query("select * from members isRegistered=1",
 				new MemberRowMapper());
 	}
 
@@ -65,20 +65,16 @@ public class MemberDaoImpl implements MemberDao {
 
 	}
 
-	public boolean checkForAuthentication(String email, String password) {
-
-		try {
-			jdbcTemplate
-					.queryForObject(
-							"select email from members where email=? and password=? and isActive=1",
-							new Object[] { email, password }, String.class);
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-		return false;
-	}
+	/*
+	 * public boolean checkForAuthentication(String email, String password) {
+	 * 
+	 * try { jdbcTemplate .queryForObject(
+	 * "select email from members where email=? and password=? and isActive=1",
+	 * new Object[] { email, password }, String.class); return true; } catch
+	 * (Exception e) { System.out.println(e.getMessage()); }
+	 * 
+	 * return false; }
+	 */
 
 	public Member getMemberByEmail(String email) {
 		return jdbcTemplate.queryForObject(
@@ -100,6 +96,7 @@ public class MemberDaoImpl implements MemberDao {
 			member.setRole(resultSet.getInt("role"));
 			member.setBatchId(resultSet.getInt("batch_id"));
 			member.setCreatedDate(resultSet.getDate("createddate"));
+			member.setIsRegistered(resultSet.getInt("isRegistered"));
 			System.out.println(member);
 			return member;
 		}
@@ -118,9 +115,9 @@ public class MemberDaoImpl implements MemberDao {
 		return false;
 	}
 
-	public List getNonActiveMembers() {
+	public List getNonRegisteredMembers() {
 		List list = jdbcTemplate
-				.query("SELECT *,b.name FROM members m,batches b WHERE m.`batch_id`=b.`id` AND  isActive=2",
+				.query("SELECT *,b.name FROM members m,batches b WHERE m.`batch_id`=b.`id` AND  isRegistered=2",
 						new MemberRowMapperWithBatchName());
 		return list;
 	}
@@ -137,6 +134,7 @@ public class MemberDaoImpl implements MemberDao {
 			member.setContact(resultSet.getLong("contact"));
 			member.setEmail(resultSet.getString("email"));
 			member.setIsActive(resultSet.getInt("isActive"));
+			member.setIsRegistered(resultSet.getInt("isRegistered"));
 			member.setRole(resultSet.getInt("role"));
 			member.setBatchId(resultSet.getInt("batch_id"));
 			member.setCreatedDate(resultSet.getDate("createddate"));
@@ -148,8 +146,8 @@ public class MemberDaoImpl implements MemberDao {
 		}
 	}
 
-	public void activateMember(int memberId) {
-		jdbcTemplate.update("update members set isActive = 1 where id = ?",
+	public void registerMember(int memberId) {
+		jdbcTemplate.update("update members set isRegistered = 1 where id = ?",
 				memberId);
 	}
 
@@ -159,14 +157,15 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	public List<Member> getAllTrainers() {
-		return jdbcTemplate.query("select * from members where role=2 ",
+		return jdbcTemplate.query(
+				"select * from members where role=2 AND isRegistered=1",
 				new MemberRowMapper());
 	}
 
 	@Override
 	public List<Member> getAllMembersByBatchId(int batchId) {
 		return jdbcTemplate.query(
-				"select * from members where batch_id=? and isActive=1",
+				"select * from members where batch_id=? AND isRegistered=1",
 				new Object[] { batchId }, new MemberRowMapper());
 	}
 
@@ -190,10 +189,34 @@ public class MemberDaoImpl implements MemberDao {
 		}
 	}
 
+	/*
+	 * @Override public void changePassword(String email, String newPassword) {
+	 * jdbcTemplate.update("update members set password = ? where email = ?",
+	 * newPassword, email); }
+	 */
+
 	@Override
-	public void changePassword(String email, String newPassword) {
-		jdbcTemplate.update("update members set password = ? where email = ?",
-				newPassword, email);
+	public void shiftMemberByBatch(int fromBatchId, int toBatchId, int memberId) {
+		jdbcTemplate.update("update members set batch_id = ? where id = ?",
+				toBatchId, memberId);
+	}
+
+	@Override
+	public List<Member> getAllTraineesByBatchId(int batchId) {
+		return jdbcTemplate
+				.query("select * from members where batch_id=? and role=3 and isRegistered=1",
+						new Object[] { batchId }, new MemberRowMapper());
+	}
+
+	@Override
+	public void setMemberIsActive(int memberId, boolean status) {
+		System.out.println(status);
+		if (status)
+			jdbcTemplate.update("update members set isActive = 1 where id = ?",
+					memberId);
+		else
+			jdbcTemplate.update("update members set isActive = 2 where id = ?",
+					memberId);
 	}
 
 }

@@ -28,9 +28,9 @@ public interface MemberService {
 
 	List<Member> getAllMembers();
 
-	List getNonActiveMembers();
+	List getNonRegisteredMembers();
 
-	void activateMember(int memberId);
+	void registerMember(int memberId);
 
 	void changeRole(int memberId, int role);
 
@@ -40,7 +40,12 @@ public interface MemberService {
 
 	List getBatchMemberGraphData();
 
-	void changePassword(String email, String newPassword);
+	// void changePassword(String email, String newPassword);
 
+	void shiftMemberByBatch(int fromBatchId, int toBatchId, int memberId);
+
+	List<Member> getAllTraineesByBatchId(int batchId);
+
+	void setMemberIsActive(int memberId, boolean status);
 
 }

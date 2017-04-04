@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" type="text/css"
 	href="css/jquery.dataTables.min.css" />
-	
+
 <link rel="stylesheet" type="text/css" href="css/admin-body-style.css" />
 <script src="js/admin/registrationRequestPage.js"></script>
 <script>
@@ -18,7 +18,7 @@
 	});
 </script>
 
-<div class="col-sm-10 overflow ">
+<div class="col-sm-12 overflow ">
 	<br>
 	<table class="col-md-12 table table-striped table-bordered table-hover"
 		id="documentsTableId">
@@ -59,10 +59,10 @@
 					<td>${member[0].createdDate}</td>
 					<td><input type="radio" memberId="${member[0].id}"
 						name="action${member[0].id}" value="Active"
-						<c:if test="${member[0].isActive == 1}"> checked</c:if> />Active
+						<c:if test="${member[0].isRegistered == 1}"> checked</c:if> />Register
 						<br> <input type="radio" name="action${member[0].id}"
 						memberId="${member[0].id}" value="Block"
-						<c:if test="${member[0].isActive == 2}"> checked</c:if> />Block</td>
+						<c:if test="${member[0].isRegistered == 2}"> checked</c:if> />Block</td>
 
 				</tr>
 			</c:forEach>
